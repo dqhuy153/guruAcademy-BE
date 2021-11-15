@@ -1,0 +1,112 @@
+//*** GET: /api/v1/courses/all (query: count, page)
+//Function: get all courses
+//Auth: public 
+//More: pagination
+###
+GET http://localhost:5000/api/v1/courses/all
+###
+GET http://localhost:5000/api/v1/courses/all?page=2&count=3
+
+//*** GET: /api/v1/courses/categories/:categorySlugOrId (query: count, page)
+//get courses by category
+//public
+//pagination
+###
+GET http://localhost:5000/api/v1/courses/categories/web-development
+
+//*** GET: /api/v1/courses/topics/:topicSlugOrId (query: count, page)
+//get courses by topic
+//public
+//pagination
+###
+GET http://localhost:5000/api/v1/courses/topics/python?count=20
+
+//*** GET: /api/v1/courses/:courseSlugOrId
+//Function: get course detail
+//Auth: public
+###
+GET http://localhost:5000/api/v1/courses/react-advanced-2022
+
+//*** GET: api/v1/courses/:courseSlugOrId/chapters
+//get main content of course, only learner who registered can access, use case: for learning room.
+//authorization: learnerDetails, teacher, admin, root
+###
+GET http://localhost:5000/api/v1/courses/react-advanced-2022/chapters
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYXJuZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE0YjM2NjZiMTBkYmE0NzNjNzM2NjkyIiwic3RhdHVzIjoxLCJyb2xlIjp7ImlkIjoyLCJuYW1lIjoibGVhcm5lciJ9LCJpYXQiOjE2MzQ5OTQzMzYsImV4cCI6MTYzNTAwMTUzNn0.C08EVSUK-2XY0L4wuMnkO7ipGMth89EXBwHuXkPUGzs
+
+//GET: api/v1/courses/:courseSlugOrId/learners
+//get members who registered the course
+//authorization: teacher, admin, root
+###
+GET http://localhost:5000/api/v1/courses/react-advanced-2022/learners
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImlhdCI6MTYzMzg1MjI2NCwiZXhwIjoxNjMzODU5NDY0fQ.DJxMH_NmDFrVkKL7Ob-ITxP6W7IZV-AYU4NcSTQQnvg
+
+//*** POST: /api/v1/courses/register
+// authentication required.
+###
+POST http://localhost:5000/api/v1/courses/register
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYXJuZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE0YjM2NjZiMTBkYmE0NzNjNzM2NjkyIiwic3RhdHVzIjoxLCJyb2xlIjp7ImlkIjoyLCJuYW1lIjoibGVhcm5lciJ9LCJpYXQiOjE2MzQ5OTM1MzgsImV4cCI6MTYzNTAwMDczOH0.f6wFUnLa6rjGK3PYCX3fLwOouGqq_C1pN-t3EpRMSXA
+
+{
+  "courseId": "61602a2a268d8024f910a122",
+  "price": 25.99,
+  "brandId": 1,
+  "methodId": 1,
+  "invoiceId": "visa-paymentId-001",
+  "discount": 0
+}
+
+//*** POST: /api/v1/courses
+//post new course
+//teacher required
+###
+POST http://localhost:5000/api/v1/courses
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXI0QGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDYwNTYwNzJlNGM5Yjc2MDI5NTYwMiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MywibmFtZSI6InRlYWNoZXIifSwiaWF0IjoxNjM1MTMzODI4LCJleHAiOjE2MzUxNDEwMjh9.PiPy3F-FoxKRX_qL29D354I82FGxFxGfPrhT2wHHmgY
+
+{
+    "title": "Python for data science 2022.",
+    "description": "Hoc lap trinh Python tai GuruAcademy",
+    "categoryId": "61495f8559f077f9cc0cb75b",
+    "topicId": "61762adea710327b33ddb84e",
+    "tags": ["Python", "learning", "online", "python"],
+    "price": 35.99,
+    "discount": 5.99
+}
+
+//*** PUT: /api/v1/courses
+//update new course
+//teacher, admin required
+###
+PUT http://localhost:5000/api/v1/courses
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXIxQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDYwNTRjNzJlNGM5Yjc2MDI5NTVmZiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MywibmFtZSI6InRlYWNoZXIifSwiaWF0IjoxNjMzODY0MDQ0LCJleHAiOjE2MzM4NzEyNDR9.4xfQGJ2xsXdqsQhX0gVpOHsdHPJGKoA3FYbF6Ly6vBk
+
+{
+    "id": "616050240be2f6e199cf2313",
+    "title": "Swift advanced 2022.",
+    "description": "Hoc lap trinh Swift tai GuruAcademy",
+    "categoryId": "616017d3834f3059b134126d",
+    "topicId": "616017d3834f3059b1341272",
+    "tags": ["Swift", "learning", "online", "ios"],
+    "price": 35,
+    "discount": 15,
+    "status": 2
+}
+
+//DELETE: /api/v1/courses
+//delete course
+//teacher, admin required
+###
+DELETE http://localhost:5000/api/v1/courses
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXIxQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDYwNTRjNzJlNGM5Yjc2MDI5NTVmZiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MywibmFtZSI6InRlYWNoZXIifSwiaWF0IjoxNjMzNjk5MjE4LCJleHAiOjE2MzM3MDY0MTh9.ZwwR-2W_eU0RfB4wmLkGrR0DS6uON_I4STCF5T65rJg
+
+{
+  "id": "61605bcd48be450272c567f5"
+}
+
+

@@ -1,0 +1,26 @@
+//authentication
+###
+POST http://localhost:5000/api/v1/auth/login
+content-type: application/json
+
+{
+    "email": "teacher4@gmail.com",
+    "password": "123456"
+}
+###
+POST http://localhost:5000/api/v1/auth/signup
+content-type: application/json
+
+{
+    "email": "learner2@gmail.com",
+    "password": "123456",
+    "firstName": "A",
+    "lastName": "Nguyen Van",
+    "dateOfBirth": "1/1/1999",
+    "address": {
+        "street": "Bach Dang",
+        "city": "da nang",
+        "country": "vietanm"
+    },
+    "role": 3
+}
