@@ -32,6 +32,8 @@ const courseCategorySchema = new Schema({
   },
   discountPercent: {
     type: Number,
+    min: 0,
+    max: 100,
     default: 0,
   },
 });

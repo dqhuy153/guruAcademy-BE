@@ -22,7 +22,12 @@ const feedbackSchema = new Schema(
     },
     content: {
       type: String,
+      required: false,
+    },
+    status: {
+      type: Number,
       required: true,
+      default: 1,
     },
   },
   { timestamps: true }

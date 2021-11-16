@@ -54,22 +54,27 @@ const courseDetailSchema = new Schema(
     },
     testResults: [
       {
-        chapterId: {
+        testId: {
           type: Schema.Types.ObjectId,
-          ref: 'Chapter',
+          ref: 'Test',
+          required: true,
         },
-        results: [
-          {
-            index: {
-              type: Number,
-              required: true,
-            },
-            isPassed: {
-              type: Boolean,
-              required: true,
-            },
-          },
-        ],
+        score: {
+          type: Number,
+          required: false,
+          min: 0,
+          max: 10,
+        },
+        result: {
+          type: Boolean,
+          required: true,
+          default: false,
+        },
+        dateTime: {
+          type: Date,
+          required: true,
+          default: Date.now,
+        },
       },
     ],
     isDone: {

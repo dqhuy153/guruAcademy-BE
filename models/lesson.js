@@ -5,43 +5,44 @@ const Schema = mongoose.Schema;
 
 mongoose.plugin(slug);
 
-const chapterSchema = new Schema(
+const lessonSchema = new Schema(
   {
-    courseId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Course',
-      required: true,
-    },
-    number: {
-      type: Number,
-      required: true,
-    },
     title: {
       type: String,
       required: true,
+    },
+    index: {
+      type: Number,
+      required: true,
+    },
+    slug: {
+      type: String,
+      slug: 'title',
+      slug_padding_size: 3,
+      unique: true,
     },
     description: {
       type: String,
       required: false,
     },
-    slug: {
+    url: {
       type: String,
-      slug: 'title',
-      unique: true,
-      slugPaddingSize: 3,
+      required: true,
     },
     status: {
       type: Number,
       required: true,
       default: 1,
     },
-    lessons: [],
-    tests: [],
-    attachments: [],
+    chapter: {
+      type: Schema.Types.ObjectId,
+      ref: 'Chapter',
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model('Chapter', chapterSchema);
+module.exports = mongoose.model('Lesson', lessonSchema);
