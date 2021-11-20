@@ -20,10 +20,7 @@ const sendInfoAccout = async (data) => {
       to: data.toEmail, // list of receivers
       subject: 'Hello ✔', // Subject line
       html: `
-                <h3>Xin chào ${data.user_name}</h3>
-                <p>bạn nhận được mail này bởi vì bạn đã đăng ký thực hiện đồ án capstone của viện đạo tạo quốc tế khoa CNPM.</p>
-                <p>Đây là password của bạn: ${data.account_password}</p>
-                <a href='https://mydtu.duytan.edu.vn/Sites/index.aspx?p=home_timetable&functionid=13#' target="_blank">Đăng nhập ngay</a>
+                <h1>Hello ${data.name}</h1>
             `, // html body
     });
   } catch (err) {
