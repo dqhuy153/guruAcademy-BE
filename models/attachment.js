@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const attachmentSchema = new Schema(
   {
-    index: {
+    number: {
       type: Number,
       required: true,
     },

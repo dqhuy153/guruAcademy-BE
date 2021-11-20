@@ -5,6 +5,7 @@ const { body } = require('express-validator');
 const chaptersController = require('../controllers/chapters');
 const isAuth = require('../middleware/isAuth');
 const Chapter = require('../models/chapter');
+const { isTeacher } = require('../middleware/authRole');
 
 const Router = express.Router();
 
@@ -17,6 +18,7 @@ Router.get('/chapters/:chapterSlugOrId', isAuth, chaptersController.getChapter);
 Router.post(
   '/chapters',
   isAuth,
+  isTeacher,
   [
     body('courseId')
       .notEmpty()
@@ -27,8 +29,10 @@ Router.post(
     body('number')
       .notEmpty()
       .withMessage("Chapter's number is required.")
-      .isNumeric()
-      .withMessage('Invalid type. Expected an Number.')
+      .isInt({
+        min: 0,
+      })
+      .withMessage('Invalid type. Expected an Integer >= 0.')
       .custom((value, { req }) => {
         return Chapter.findOne({
           courseId: req.body.courseId,
@@ -42,71 +46,7 @@ Router.post(
 
     body('title', "Chapter's title is required.").notEmpty(),
 
-    body('videos')
-      .if((value) => value !== undefined)
-      .isArray()
-      .withMessage('Invalid type. Expected an Array.'),
-
-    body('videos[*].title', 'Video title is required.')
-      .if(
-        (value, { req }) =>
-          req.body.videos !== undefined || req.body.videos !== []
-      )
-      .notEmpty(),
-
-    body('videos[*].url')
-      .if(
-        (value, { req }) =>
-          req.body.videos !== undefined || req.body.videos !== []
-      )
-      .notEmpty()
-      .withMessage('Video URL is required.')
-      .isURL()
-      .withMessage('Invalid type. Expected an URL'),
-
-    body('tests')
-      .if((value) => value !== undefined)
-      .isArray()
-      .withMessage('Invalid type. Expected an Array.'),
-
-    body('tests[*].title', 'Test title is required.')
-      .if(
-        (value, { req }) =>
-          req.body.tests !== undefined || req.body.tests !== []
-      )
-      .notEmpty(),
-
-    body('tests[*].questions')
-      .if(
-        (value, { req }) =>
-          req.body.tests !== undefined || req.body.tests !== []
-      )
-      .notEmpty()
-      .withMessage('Test questions is required.')
-      .isArray()
-      .withMessage('Invalid type. Expected an Array'),
-
-    body('attachments')
-      .if((value) => value !== undefined)
-      .isArray()
-      .withMessage('Invalid type. Expected an Array.'),
-
-    body('attachments[*].title', 'Attachment title is required.')
-      .if(
-        (value, { req }) =>
-          req.body.attachments !== undefined || req.body.attachments !== []
-      )
-      .notEmpty(),
-
-    body('attachments[*].url')
-      .if(
-        (value, { req }) =>
-          req.body.attachments !== undefined || req.body.attachments !== []
-      )
-      .notEmpty()
-      .withMessage('Attachments URL is required.')
-      .isURL()
-      .withMessage('Invalid type. Expected an URL'),
+    body('description').optional(),
   ],
   chaptersController.postNewChapter
 );
@@ -116,6 +56,7 @@ Router.post(
 Router.put(
   '/chapters',
   isAuth,
+  isTeacher,
   [
     body('id')
       .notEmpty()
@@ -163,71 +104,32 @@ Router.put(
       .isInt({ max: 1, min: 0 })
       .withMessage('Status only excepts value: 0 & 1'),
 
-    body('videos')
+    body('contents')
       .if((value) => value !== undefined)
+      .notEmpty()
+      .withMessage('Chapter contents is required.')
       .isArray()
       .withMessage('Invalid type. Expected an Array.'),
 
-    body('videos[*].title', 'Video title is required.')
+    body('contents[*].typeId')
       .if(
         (value, { req }) =>
-          req.body.videos !== undefined || req.body.videos !== []
-      )
-      .notEmpty(),
-
-    body('videos[*].url')
-      .if(
-        (value, { req }) =>
-          req.body.videos !== undefined || req.body.videos !== []
+          req.body.contents !== undefined || req.body.contents !== []
       )
       .notEmpty()
-      .withMessage('Video URL is required.')
-      .isURL()
-      .withMessage('Invalid type. Expected an URL'),
+      .withMessage('Type ID of content is required.')
+      .isInt({ min: 0, max: 2 })
+      .withMessage('Invalid type. Expected an Integer between 0 and 2.'),
 
-    body('tests')
-      .if((value) => value !== undefined)
-      .isArray()
-      .withMessage('Invalid type. Expected an Array.'),
-
-    body('tests[*].title', 'Test title is required.')
+    body('contents[*].contentId')
       .if(
         (value, { req }) =>
-          req.body.tests !== undefined || req.body.tests !== []
-      )
-      .notEmpty(),
-
-    body('tests[*].questions')
-      .if(
-        (value, { req }) =>
-          req.body.tests !== undefined || req.body.tests !== []
+          req.body.contents !== undefined || req.body.contents !== []
       )
       .notEmpty()
-      .withMessage('Test questions is required.')
-      .isArray()
-      .withMessage('Invalid type. Expected an Array'),
-
-    body('attachments')
-      .if((value) => value !== undefined)
-      .isArray()
-      .withMessage('Invalid type. Expected an Array.'),
-
-    body('attachments[*].title', 'Attachment title is required.')
-      .if(
-        (value, { req }) =>
-          req.body.attachments !== undefined || req.body.attachments !== []
-      )
-      .notEmpty(),
-
-    body('attachments[*].url')
-      .if(
-        (value, { req }) =>
-          req.body.attachments !== undefined || req.body.attachments !== []
-      )
-      .notEmpty()
-      .withMessage('Attachments URL is required.')
-      .isURL()
-      .withMessage('Invalid type. Expected an URL'),
+      .withMessage('Content ID is required.')
+      .isMongoId()
+      .withMessage('Invalid type. Expected an ObjectId.'),
   ],
   chaptersController.updateChapter
 );
@@ -237,6 +139,7 @@ Router.put(
 Router.delete(
   '/chapters',
   isAuth,
+  isTeacher,
   [
     body('id')
       .notEmpty()

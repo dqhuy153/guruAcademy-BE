@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "guru-academy-storage",
+  "private_key_id": "d0e534985a21361a02743587fdb42b7fb9a1996f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCQTmd5jPU/knSU\n/OX94Ul+O1EVE/vvliPzdBCTOft4GLHzFOlUnqN/P7PiRokl4t9gnr+XJUXdI054\nQC1nk39FngbeXKQo3Frx+Ca1/sLIhPXAfrreOTafGZdjgzpuN60TIXVe2fft2ov7\n1pc2vGwoN9hEf0Pr5RLuQuKrG4+3sEUn8Ut4q2sGyBUGC70XKNIRZ4ee41uu1U6S\n2FJtNGI5GZDfQewuvWh7qvxNV/pqHcfUkOXAgADUtQyi+OtHx8zYvQ99jeZWaBR6\nTf6sUVtWhnqXi5+KyyJK+YKKUfXizSF5QAoymmrbudn4thQ1F3pkMdxEm6OZ2bq7\nfJPeOjjRAgMBAAECggEAEaymsAynj5odoQ9iEIC2vokfltYwI+G25Mc1DgE6p3SX\n3ALWSrzU392ip77VprAlRZlf9DBWoJ2Fy4Tpwr8+Jf3TT8oXOaF2mp8XB7CstQBS\n9LkY5GWrxtwMrp2oqw3y6u5MyLmn7AgZ39YiRmwYz6q6WHZhcGup0EidKFGrfjb/\nwQQBjJafnJLxz8bjvKGozQUAHTL+CoeA04EVSZrkLj4brwCAvvYVSUnY2Q6Fehd/\ngkpmAKuOzryYyBpINIXvFEs3jU+5+TtJ9gIkFav9YZ/kyjeY8m1Cs3tfHz56CDaR\n1sQyV6jeIz+86ewhQMC37vyHbxE61OzhK5Ij2YvAuQKBgQDF97yP4GjcJ8wBUoXE\nzRSwEFMyu2dp2x+ZpRtpaGUvEAHXqj7zKmQtQ9mKweWBL4TT6n/nUFqH/AGFhVuP\nYR5OOD6ZblrEz43XkKJy+ijMAzgE6ex1R7X6fR/mebU22iKiZsEwOvuHVb8FXJK8\nVN0AhQKnQnKPqcdIM8QKW9/wqQKBgQC6m7RcqaPcXk2cV9hI8BF+8DPVX+USYH/Z\nKqwQw2QzwBBzRDn98Qv/tMEQ8b5irVIkuJuE53avF0ETYMuCldZQE3ZYaf9vfX3V\njfJssrPFP6TL34OER2O4Lu35UOCS0wTa68KwJPUnSLOe2naaGeZMANtCdtLEXj08\nkKYgIyEX6QKBgQDB6GwBPZ1Yb37KmMtAPmSSJBtqKNgdfq2QMIIOGFxr4bD8TtyE\nEDS5hakS2eN0S1g+voXzy+gxJG1VHI/XfBhUI5FldgtglbBowlnsZw4I7uozHfIn\n2krshRz3AqW2iam9CwsVs+Bl6l5F4Sw1XqZueNplfJd8Ep+JIHNYdi9+qQKBgG/O\nDpheQ4ErN1DvCPVacQEfJc84L2V9T9xrxsAccZLYBoMpY52UqN3CDNL8JFe3BLpf\nqT5N+DwbsK/NlOFeqRM9NfDvQU4pYBVtgMxDnZYW9cP43TGKHGMkKwzvuj3+FLCe\nBP3IhuHMm2IX/muCDQuIj9YYn1tsI0CAYihrI87RAoGAQCectdzVaq0f40o3pDAI\nm2jCL3rXGgdeJhk66ReBjN6FAEKaPVYYduMzEqSKI5RMPIFNo48oCoadA/cyY+pt\npueqvqzDboEjtOqdKUVCx//ZvLPZBd/ttWEY7qljv8bcb4gUj6DPskR9wj9e4OGg\nXri0IFT9n9b/j1Seqo/AdPw=\n-----END PRIVATE KEY-----\n",
+  "client_email": "guru-academy@guru-academy-storage.iam.gserviceaccount.com",
+  "client_id": "104516087520768869148",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/guru-academy%40guru-academy-storage.iam.gserviceaccount.com"
+}

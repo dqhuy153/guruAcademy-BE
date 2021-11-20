@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
+const User = require('../models/user');
+
+module.exports = async (req, res, next) => {
   const authHeader = req.header('Authorization');
   const token = authHeader && authHeader.split(' ')[1]; //header: {'Authorization': 'Bearer token'}
 
@@ -16,10 +18,7 @@ module.exports = (req, res, next) => {
   let decodedToken;
 
   try {
-    decodedToken = jwt.verify(
-      token,
-      process.env.ACCESS_TOKEN_SECRET || 'guruAcademySecretKey'
-    );
+    decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   } catch (error) {
     error.statusCode = 500;
     error.success = false;
@@ -35,8 +34,17 @@ module.exports = (req, res, next) => {
     return next(error);
   }
 
-  req.userId = decodedToken.userId;
+  //check authentication
+  const { userId } = decodedToken;
+  const user = await User.findById(userId);
+
+  if (!user) {
+    const error = new Error('Authentication failed!');
+    error.statusCode = 401;
+
+    return next(error);
+  }
+
+  req.userId = userId;
   next();
 };
-
-// module.exports = verifyToken;

@@ -1,9 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Notification = require('../models/notification');
 
+const Notification = require('../models/notification');
 const User = require('../models/user');
 const { validationError } = require('../util/helper');
+const { UserRole } = require('../services/auth.service');
+const { UserStatus, JwtConstants } = require('../config/constant');
 
 //Signup
 exports.signup = async (req, res, next) => {
@@ -27,25 +29,20 @@ exports.signup = async (req, res, next) => {
   let roleData;
   let status;
 
-  if (role === 1) {
-    roleData = {
-      id: 1,
-      name: 'admin',
-    };
+  if (role === UserRole.ADMIN.id) {
+    roleData = UserRole.ADMIN;
 
     status = 2; //pending
-  } else if (role === 2) {
-    roleData = {
-      id: 2,
-      name: 'learner',
-    };
+  }
+
+  if (role === UserRole.LEARNER.id) {
+    roleData = UserRole.LEARNER;
 
     status = 1; //active
-  } else if (role === 3) {
-    roleData = {
-      id: 3,
-      name: 'teacher',
-    };
+  }
+
+  if (role === UserRole.TEACHER.id) {
+    roleData = UserRole.TEACHER;
 
     status = 2; //pending
   }
@@ -124,7 +121,7 @@ exports.login = async (req, res, next) => {
     }
 
     //check user banned
-    if (user.status === 10) {
+    if (user.status === UserStatus.BANNED) {
       const error = new Error(
         'Your account has been suspended. Please contact with us if it have any mistake!'
       );
@@ -134,9 +131,9 @@ exports.login = async (req, res, next) => {
     }
 
     //check user locked
-    if (user.status === 0) {
+    if (user.status === UserStatus.INACTIVE) {
       //unlock user
-      user.status === 1;
+      user.status === UserStatus.ACTIVE;
       await user.save();
 
       const unlockNotification = new Notification({
@@ -159,9 +156,9 @@ exports.login = async (req, res, next) => {
         status: user.status,
         role: user.role,
       },
-      'guruAcademySecretKey',
+      JwtConstants.SECRET,
       {
-        expiresIn: '2h',
+        expiresIn: JwtConstants.EXPIRED_TIME,
       }
     );
 

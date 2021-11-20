@@ -1,33 +1,14 @@
-const mongoose = require('mongoose');
-
 const { validationError } = require('../util/helper');
-const User = require('../models/user');
-const Course = require('../models/course');
 const Chapter = require('../models/chapter');
-const CourseDetail = require('../models/courseDetail');
+const { courseService, chapterService } = require('../services');
 
 exports.getChapter = async (req, res, next) => {
   const chapterSlugOrId = req.params.chapterSlugOrId;
 
   try {
-    //check authentication
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      const error = new Error('Authentication failed!');
-      error.statusCode = 401;
-
-      throw error;
-    }
-
     //get chapter
-    let chapterFilterData;
-    if (mongoose.isValidObjectId(chapterSlugOrId)) {
-      const chapterId = new mongoose.Types.ObjectId(chapterSlugOrId);
-      chapterFilterData = { _id: chapterId };
-    } else {
-      chapterFilterData = { slug: chapterSlugOrId };
-    }
+    const chapterFilterData =
+      chapterService.filterChaptersBySlugOrId(chapterSlugOrId);
 
     const chapter = await Chapter.findOne(chapterFilterData).populate({
       path: 'courseId',
@@ -52,23 +33,15 @@ exports.getChapter = async (req, res, next) => {
       throw error;
     }
 
+    //check course of chapter
+    await courseService.findCourseByIdAsync(chapter.courseId);
+
     //check auth who can see this chapter content
-    const courseDetail = await CourseDetail.findOne({
-      userId: user.id,
-      courseId: chapter.courseId._id,
-    });
-
-    if (
-      !courseDetail && //learners check
-      user.role.id !== 1 && //admin
-      user.role.id !== 0 && //ROOT
-      user._id.toString() !== chapter.courseId.author._id.toString() //teacher
-    ) {
-      const error = new Error('You do not have permission to do this action!');
-      error.statusCode = 403;
-
-      throw error;
-    }
+    await chapterService.checkAuthChapterAsync(
+      req.userId,
+      chapter.courseId._id,
+      chapter.courseId.author._id.toString()
+    );
 
     //send res
     res.status(200).json({
@@ -98,48 +71,16 @@ exports.postNewChapter = async (req, res, next) => {
   const number = req.body.number;
   const title = req.body.title;
   const description = req.body.description;
-  const tests = req.body.tests;
-  const videos = req.body.videos;
-  const attachments = req.body.attachments;
 
   try {
-    //check authentication
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      const error = new Error('Authentication failed!');
-      error.statusCode = 401;
-
-      throw error;
-    }
-
-    //check role is teacher or not
-    if (user.role.id !== 3) {
-      const error = new Error('You do not have permission to do this action!');
-      error.statusCode = 403;
-
-      throw error;
-    }
-
     //check course info
-    const course = await Course.findById(courseId);
-
-    if (!course) {
-      const error = new Error('Course not found!');
-      error.statusCode = 404;
-
-      throw error;
-    }
+    const course = await courseService.findCourseByIdAsync(courseId);
 
     //check course's authorization
-    if (course.author.toString() !== req.userId.toString()) {
-      const error = new Error(
-        'You do not have permission to do this action! This course is not your.'
-      );
-      error.statusCode = 403;
-
-      throw error;
-    }
+    courseService.checkCourseAuthorization(
+      course.author.toString(),
+      req.userId.toString()
+    );
 
     //save new chapter
     const chapter = new Chapter({
@@ -147,9 +88,10 @@ exports.postNewChapter = async (req, res, next) => {
       number,
       title,
       description,
-      tests,
-      attachments,
-      videos,
+      contents: [],
+      lessons: [],
+      tests: [],
+      attachments: [],
     });
 
     await chapter.save();
@@ -190,38 +132,11 @@ exports.updateChapter = async (req, res, next) => {
   const description = req.body.description;
   const slug = req.body.slug;
   const status = req.body.status;
-  const tests = req.body.tests;
-  const videos = req.body.videos;
-  const attachments = req.body.attachments;
+  const contents = req.body.contents;
 
   try {
-    //check authentication
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      const error = new Error('Authentication failed!');
-      error.statusCode = 401;
-
-      throw error;
-    }
-
-    //check role is teacher or not
-    if (user.role.id !== 3) {
-      const error = new Error('You do not have permission to do this action!');
-      error.statusCode = 403;
-
-      throw error;
-    }
-
     //check chapter info
-    const chapter = await Chapter.findById(chapterId);
-
-    if (!chapter) {
-      const error = new Error('Chapter not found!');
-      error.statusCode = 404;
-
-      throw error;
-    }
+    const chapter = await chapterService.findChapterByIdAsync(chapterId);
 
     //check number's chapter exists
     const checkNumberChapter = await Chapter.findOne({
@@ -237,23 +152,10 @@ exports.updateChapter = async (req, res, next) => {
     }
 
     //check chapter's authorization
-    const course = await Course.findById(chapter.courseId);
-
-    if (!course) {
-      const error = new Error('Course not found!');
-      error.statusCode = 404;
-
-      throw error;
-    }
-
-    if (course.author.toString() !== req.userId.toString()) {
-      const error = new Error(
-        'You do not have permission to do this action! This course is not your.'
-      );
-      error.statusCode = 403;
-
-      throw error;
-    }
+    await courseService.checkCourseAuthorizationAsync(
+      chapter.courseId,
+      req.userId.toString()
+    );
 
     //update chapter
     //only update field has data in body
@@ -262,9 +164,7 @@ exports.updateChapter = async (req, res, next) => {
     if (number !== undefined) chapter.number = number;
     if (slug) chapter.slug = slug;
     if (status !== undefined) chapter.status = status;
-    if (videos !== undefined) chapter.videos = videos;
-    if (tests !== undefined) chapter.tests = tests;
-    if (attachments !== undefined) chapter.attachments = attachments;
+    if (contents !== undefined) chapter.contents = contents;
 
     await chapter.save();
 
@@ -293,57 +193,20 @@ exports.deleteChapter = async (req, res, next) => {
   const chapterId = req.body.id;
 
   try {
-    //check auth user
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      const error = new Error('Authentication failed!');
-      error.statusCode = 401;
-
-      throw error;
-    }
-
-    //check role is teacher or not
-    if (user.role.id !== 3) {
-      const error = new Error('You do not have permission to do this action!');
-      error.statusCode = 403;
-
-      throw error;
-    }
-
     //check chapter info
-    const chapter = await Chapter.findById(chapterId);
-
-    if (!chapter) {
-      const error = new Error('Chapter not found!');
-      error.statusCode = 404;
-
-      throw error;
-    }
+    const chapter = await chapterService.findChapterByIdAsync(chapterId);
 
     //check chapter's authorization
-    const course = await Course.findById(chapter.courseId);
-
-    if (!course) {
-      const error = new Error('Course not found!');
-      error.statusCode = 404;
-
-      throw error;
-    }
-
-    if (course.author.toString() !== req.userId.toString()) {
-      const error = new Error(
-        'You do not have permission to do this action! This course is not your.'
-      );
-      error.statusCode = 403;
-
-      throw error;
-    }
+    await courseService.checkCourseAuthorizationAsync(
+      chapter.courseId,
+      req.userId.toString()
+    );
 
     //delete chapter
     await Chapter.findByIdAndDelete(chapterId);
 
     //remove chapter from course
+    const course = await courseService.findCourseByIdAsync(chapter.courseId);
     course.chapters.pull(chapter._id);
     await course.save();
 

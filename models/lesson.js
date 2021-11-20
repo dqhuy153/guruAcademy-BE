@@ -11,14 +11,14 @@ const lessonSchema = new Schema(
       type: String,
       required: true,
     },
-    index: {
+    number: {
       type: Number,
-      required: true,
+      required: false,
     },
     slug: {
       type: String,
       slug: 'title',
-      slug_padding_size: 3,
+      slugPaddingSize: 3,
       unique: true,
     },
     description: {

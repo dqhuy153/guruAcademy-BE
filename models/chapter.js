@@ -35,6 +35,19 @@ const chapterSchema = new Schema(
       required: true,
       default: 1,
     },
+    contents: [
+      {
+        typeName: {
+          type: String,
+        },
+        typeId: {
+          type: Number,
+        },
+        contentId: {
+          type: String,
+        },
+      },
+    ],
     lessons: [],
     tests: [],
     attachments: [],

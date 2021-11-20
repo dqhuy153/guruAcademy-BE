@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 
 const { validationError, unlinkPath } = require('../util/helper');
 const User = require('../models/user');
-const { uploadFile, removeFile } = require('../util/s3');
+const { uploadFile, removeFile } = require('../services/s3');
 
 //setup unlinked files
 

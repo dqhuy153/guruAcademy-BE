@@ -12,7 +12,7 @@ const Stream = require('../models/stream');
 const Feedback = require('../models/feedback');
 const CourseDetail = require('../models/courseDetail');
 
-const { uploadFile, removeFile } = require('../util/s3');
+const { uploadFile, removeFile } = require('../services/s3');
 
 //COURSES
 //public
@@ -306,6 +306,7 @@ exports.getCourse = async (req, res, next) => {
           '-videos.url',
           '-attachments.url',
         ],
+        options: { sort: { number: 1 } },
       },
       {
         path: 'streams',
@@ -390,6 +391,7 @@ exports.getCourseChapters = async (req, res, next) => {
         {
           path: 'chapters',
           select: ['-courseId'],
+          options: { sort: { number: 1 } },
         },
       ]);
 

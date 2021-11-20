@@ -92,6 +92,7 @@ Router.get('/check', isAuth, (req, res, next) =>
   })
 );
 
-//GET: api/v1/auth/
+//GET: api/v1/auth
 Router.get('/', isAuth, authController.getUser);
+
 module.exports = Router;

@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 mongoose.plugin(slug);
 
 const testSchema = new Schema({
-  index: {
+  number: {
     type: Number,
     required: true,
   },

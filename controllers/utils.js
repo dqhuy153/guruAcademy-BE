@@ -1,5 +1,5 @@
 const { validationError, unlinkPath } = require('../util/helper');
-const { getFileStream, uploadFile } = require('../util/s3');
+const { getFileStream, uploadFile } = require('../services/s3');
 
 exports.getFileFromStorage = (req, res, next) => {
   //check validation
