@@ -27,7 +27,7 @@ const filterChaptersBySlugOrId = (chapterSlugOrId) => {
 };
 
 //check auth who can see this chapter content
-const checkAuthChapterAsync = async (userId, courseId, chapterAuthorId) => {
+const checkAuthChapterAsync = async (userId, courseId, courseAuthorId) => {
   const user = await findUserByIdAsync(userId);
 
   const courseDetail = await CourseDetail.findOne({
@@ -39,7 +39,7 @@ const checkAuthChapterAsync = async (userId, courseId, chapterAuthorId) => {
     !courseDetail && //learners check
     user.role.id !== UserRole.ADMIN.id && //admin
     user.role.id !== UserRole.ROOT.id && //ROOT
-    user._id.toString() !== chapterAuthorId //teacher
+    user._id.toString() !== courseAuthorId.toString() //teacher
   ) {
     const error = new Error('You do not have permission to do this action!');
     error.statusCode = 403;

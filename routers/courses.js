@@ -4,6 +4,7 @@ const multer = require('multer');
 
 const coursesController = require('../controllers/courses');
 const isAuth = require('../middleware/isAuth');
+const Course = require('../models/course');
 
 const Router = express.Router();
 
@@ -257,7 +258,19 @@ Router.put(
       .notEmpty()
       .withMessage('Slug is required.')
       .matches('^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$')
-      .withMessage("Invalid slug's type."),
+      .withMessage("Invalid slug's type.")
+      .custom((value, { req }) => {
+        return Course.findOne({
+          _id: {
+            $ne: new mongoose.Types.ObjectId(req.params.id),
+          },
+          slug: value,
+        }).then((courseDoc) => {
+          if (courseDoc) {
+            return Promise.reject(`Slug "${value}" is exists!`);
+          }
+        });
+      }),
 
     body('categoryId')
       .if((value) => value !== undefined)

@@ -7,11 +7,62 @@ exports.getLesson = async (req, res, next) => {
   const lessonId = req.params.lessonSlugOrId;
 
   try {
-    const lesson = await lessonService.findLessonByIdAsync(lessonId);
+    const lesson = await Lesson.findById(lessonId).populate([
+      {
+        path: 'chapter',
+        select: ['title', 'description'],
+        populate: {
+          path: 'courseId',
+          select: ['title', 'description', 'author'],
+        },
+      },
+      {
+        path: 'tests',
+        select: [
+          'title',
+          'description',
+          'status',
+          'number',
+          'attachments',
+          'slug',
+          'question',
+        ],
+      },
+      {
+        path: 'attachments',
+        select: ['title', 'description', 'status', 'number', 'url', 'slug'],
+      },
+      {
+        path: 'comments',
+        select: ['-lesson'],
+        populate: {
+          path: 'user',
+          select: ['firstName', 'lastName', 'imageUrl', 'role'],
+        },
+      },
+    ]);
+
+    if (!lesson) {
+      const error = new Error('Lesson not found');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    //check who can see this lesson
+    //Admin, root, teacher author, learner who buy course
+    //check auth who can see this chapter content
+    await chapterService.checkAuthChapterAsync(
+      req.userId,
+      lesson.chapter.courseId._id,
+      lesson.chapter.courseId.author._id.toString()
+    );
 
     res.status(200).json({
+      message: 'Fetch lesson successfully!',
+      data: {
+        lesson,
+      },
       success: true,
-      lesson,
     });
   } catch (error) {
     if (!error.statusCode) {
@@ -33,6 +84,12 @@ exports.createLesson = async (req, res, next) => {
   try {
     //check if chapter exists
     const chapter = await chapterService.findChapterByIdAsync(chapterId);
+
+    //check course's authorization
+    await courseService.checkCourseWriteableAsync(
+      chapter.courseId.toString(),
+      req.userId.toString()
+    );
 
     //post image to s3
     let uploadS3Result;
@@ -80,7 +137,8 @@ exports.updateLesson = async (req, res, next) => {
   if (error) return next(error);
 
   const lessonId = req.params.id;
-  const { title, description, status, number, attachments, tests } = req.body;
+  const { title, description, status, number, attachments, slug, tests } =
+    req.body;
   const videoFile = req.file;
 
   try {
@@ -89,8 +147,8 @@ exports.updateLesson = async (req, res, next) => {
     //check course's authorization
     const chapter = await chapterService.findChapterByIdAsync(lesson.chapter);
 
-    await courseService.checkCourseAuthorizationAsync(
-      chapter.courseId,
+    await courseService.checkCourseWriteableAsync(
+      chapter.courseId.toString(),
       req.userId.toString()
     );
 
@@ -107,13 +165,14 @@ exports.updateLesson = async (req, res, next) => {
       await unlinkPath(videoFile.path);
     }
 
-    title ?? (lesson.title = title);
-    description ?? (lesson.description = description);
-    status ?? (lesson.status = status);
-    number ?? (lesson.number = number);
-    attachments ?? (lesson.attachments = attachments);
-    tests ?? (lesson.tests = tests);
-    uploadS3Result && (lesson.url = `/files/${uploadS3Result.Key}`);
+    if (title) lesson.title = title;
+    if (description !== undefined) lesson.description = description;
+    if (status !== undefined) lesson.status = status;
+    if (slug !== undefined) lesson.slug = slug;
+    if (number !== undefined) lesson.number = number;
+    if (attachments !== undefined) lesson.attachments = attachments;
+    if (tests !== undefined) lesson.tests = tests;
+    if (uploadS3Result) lesson.url = `/files/${uploadS3Result.Key}`;
 
     await lesson.save();
 
@@ -121,8 +180,8 @@ exports.updateLesson = async (req, res, next) => {
       message: 'Lesson updated successfully!',
       data: {
         lesson,
-        success: true,
       },
+      success: true,
     });
   } catch (error) {
     if (!error.statusCode) {
@@ -146,8 +205,8 @@ exports.deleteLesson = async (req, res, next) => {
     //check course's authorization
     const chapter = await chapterService.findChapterByIdAsync(lesson.chapter);
 
-    await courseService.checkCourseAuthorizationAsync(
-      chapter.courseId,
+    await courseService.checkCourseWriteableAsync(
+      chapter.courseId.toString(),
       req.userId.toString()
     );
 

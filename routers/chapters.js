@@ -5,7 +5,7 @@ const { body, param } = require('express-validator');
 const chaptersController = require('../controllers/chapters');
 const isAuth = require('../middleware/isAuth');
 const Chapter = require('../models/chapter');
-const { isTeacher } = require('../middleware/authRole');
+const { isRootOrAdminOrTeacher } = require('../middleware/authRole');
 const Lesson = require('../models/lesson');
 
 const Router = express.Router();
@@ -19,7 +19,7 @@ Router.get('/chapters/:chapterSlugOrId', isAuth, chaptersController.getChapter);
 Router.post(
   '/chapters',
   isAuth,
-  isTeacher,
+  isRootOrAdminOrTeacher,
   [
     body('courseId')
       .notEmpty()
@@ -58,7 +58,7 @@ Router.post(
 Router.put(
   '/chapters/:id',
   isAuth,
-  isTeacher,
+  isRootOrAdminOrTeacher,
   [
     param('id')
       .notEmpty()
@@ -87,7 +87,7 @@ Router.put(
       .custom((value, { req }) => {
         return Chapter.findOne({
           _id: {
-            $ne: new mongoose.Types.ObjectId(req.body.id),
+            $ne: new mongoose.Types.ObjectId(req.params.id),
           },
           slug: value,
         }).then((chapterDoc) => {
@@ -142,7 +142,7 @@ Router.put(
 Router.delete(
   '/chapters/:id',
   isAuth,
-  isTeacher,
+  isRootOrAdminOrTeacher,
   [
     param('id')
       .notEmpty()

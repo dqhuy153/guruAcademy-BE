@@ -3,31 +3,31 @@
 //teacher, learners of this course, admin, root
 ###
 GET http://localhost:5000/api/v1/chapters/6198c31c3738020f67466a69
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0OTY5NzIsImV4cCI6MTYzNzU4MzM3Mn0.TcH-vKKwgzkPeF13Q2RHTbfHVQH6dZd4hBh4T8WYUOE
 
 //POST: /api/v1/chapters
 //teacher required
 ###
 POST http://localhost:5000/api/v1/chapters
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0ODc4MTksImV4cCI6MTYzNzU3NDIxOX0.EfY4vlePReuh1ssBDRrOLcM3VR92Fr9K5gSfHp0frqA
 
 {
   "courseId": "617628e7a710327b33ddb813",
-  "title": "SCSS vs CSS vs a",
+  "title": "Practice",
   "description": "SCSS vs CSS"
 }
 
 //PUT: /api/v1/chapters
 //teacher required
 ###
-PUT http://localhost:5000/api/v1/chapters/6198c31c3738020f67466a69
+PUT http://localhost:5000/api/v1/chapters/619a3ebfebd2fdc6823069eb
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjkyNzgsImV4cCI6MTYzNzU1NTY3OH0.zgsP8osRXU4n6DY6PzsPZ1pSoKYSuTprKKfywM7TzA4
 
 {
   "number": 1,
-  "title": "Giới thiệu khóa học CSS",
+  "title": "Practice CSS",
   "description": "Khóa học này về gì?",
   "status": 1,
   "slug": "Gioi-thieu-khoa-hoc",
@@ -37,5 +37,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZ
 //DELETE: /api/v1/chapters
 //teacher required
 ###
-DELETE http://localhost:5000/api/v1/chapters/6199afcfe06c1f932ff0b7f4
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjkyNzgsImV4cCI6MTYzNzU1NTY3OH0.zgsP8osRXU4n6DY6PzsPZ1pSoKYSuTprKKfywM7TzA4
+DELETE http://localhost:5000/api/v1/chapters/619a1602dcf06e67f9e4d592
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXIyQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDYwNTZlNzJlNGM5Yjc2MDI5NTYwNSIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MywibmFtZSI6InRlYWNoZXIifSwiaWF0IjoxNjM3NDg4MTY2LCJleHAiOjE2Mzc1NzQ1NjZ9.69pQC0Jn6bzCq5JZPPKwi9RU3BKpOf84Wg27XtGDkzg

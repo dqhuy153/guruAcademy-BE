@@ -1,18 +1,18 @@
 //GET: /api/v1/lessons/:lessonSlugOrId
 //authentication require
 ###
-GET http://localhost:5000/api/v1/lessons/6199b600f4c7faf3e6219b59
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
+GET http://localhost:5000/api/v1/lessons/619a3cd1a929586dfef0d408
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0OTY5NzIsImV4cCI6MTYzNzU4MzM3Mn0.TcH-vKKwgzkPeF13Q2RHTbfHVQH6dZd4hBh4T8WYUOE
 
 //POST: /api/v1/lessons
 //teacher required
 ###
 POST http://localhost:5000/api/v1/lessons
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0OTY5NzIsImV4cCI6MTYzNzU4MzM3Mn0.TcH-vKKwgzkPeF13Q2RHTbfHVQH6dZd4hBh4T8WYUOE
 
 {
-  "title": "Lesson 3", 
+  "title": "Lesson 5", 
   "description": "Introduce 3", 
   "chapterId": "6198c31c3738020f67466a69"
 }
@@ -20,23 +20,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZ
 //PUT: /api/v1/lessons
 //teacher required
 ###
-PUT http://localhost:5000/api/v1/lessons
+PUT http://localhost:5000/api/v1/lessons/619a3cd1a929586dfef0d408
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0OTY5NzIsImV4cCI6MTYzNzU4MzM3Mn0.TcH-vKKwgzkPeF13Q2RHTbfHVQH6dZd4hBh4T8WYUOE
 
 {
-  "title": "Lesson 3", 
-  "description": "Introduce 3", 
-  "chapterId": "6198c31c3738020f67466a69"
+  "title": "Lesson 34", 
+  "description": "Introduce 34"
 }
 
 //DELETE: /api/v1/lessons
 //teacher required
 ###
-DELETE http://localhost:5000/api/v1/lessons
+DELETE http://localhost:5000/api/v1/lessons/619a4198dc1cebdd3c70f4c3
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
-
-{
-  "id": "6199b600f4c7faf3e6219b59"
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0OTY5NzIsImV4cCI6MTYzNzU4MzM3Mn0.TcH-vKKwgzkPeF13Q2RHTbfHVQH6dZd4hBh4T8WYUOE

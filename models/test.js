@@ -40,11 +40,15 @@ const testSchema = new Schema({
       },
       c: {
         type: String,
-        required: true,
+        required: false,
       },
       d: {
         type: String,
-        required: true,
+        required: false,
+      },
+      e: {
+        type: String,
+        required: false,
       },
       answer: {
         type: String,

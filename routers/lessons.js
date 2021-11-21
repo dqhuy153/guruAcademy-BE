@@ -4,9 +4,10 @@ const { body, param } = require('express-validator');
 
 const isAuth = require('../middleware/isAuth');
 const lessonsController = require('../controllers/lessons');
-const { isRootOrAdminOrTeacher, isTeacher } = require('../middleware/authRole');
+const { isRootOrAdminOrTeacher } = require('../middleware/authRole');
 const Attachment = require('../models/attachment');
 const Test = require('../models/test');
+const Lesson = require('../models/lesson');
 
 const Router = express.Router();
 
@@ -47,20 +48,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage, fileFilter });
 
 //GET: /api/v1/lessons/:lessonSlugOrId
-//authentication require
-Router.get(
-  '/lessons/:lessonSlugOrId',
-  isAuth,
-  isRootOrAdminOrTeacher,
-  lessonsController.getLesson
-);
+//Admin, root, teacher author, learner who buy course
+Router.get('/lessons/:lessonSlugOrId', isAuth, lessonsController.getLesson);
 
 //POST: /api/v1/lessons
 //teacher required
 Router.post(
   '/lessons',
   isAuth,
-  isTeacher,
+  isRootOrAdminOrTeacher,
   upload.single('video'),
   [
     body('title', "Lesson's title is required.").notEmpty(),
@@ -83,10 +79,10 @@ Router.post(
 Router.put(
   '/lessons/:id',
   isAuth,
-  isTeacher,
+  isRootOrAdminOrTeacher,
   upload.single('video'),
   [
-    body('id')
+    param('id')
       .notEmpty()
       .withMessage('Lesson Id is required.')
       .isMongoId()
@@ -106,6 +102,25 @@ Router.put(
       .withMessage('Invalid type. Expected an Number.')
       .isInt({ max: 1, min: 0 })
       .withMessage('Status only excepts value: 0 & 1'),
+
+    body('slug')
+      .if((value) => value !== undefined)
+      .notEmpty()
+      .withMessage('Slug is required.')
+      .matches('^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$')
+      .withMessage("Invalid slug's type.")
+      .custom((value, { req }) => {
+        return Lesson.findOne({
+          _id: {
+            $ne: new mongoose.Types.ObjectId(req.params.id),
+          },
+          slug: value,
+        }).then((lessonDoc) => {
+          if (lessonDoc) {
+            return Promise.reject(`Slug "${value}" is exists!`);
+          }
+        });
+      }),
 
     body('attachments')
       .if((value) => value !== undefined)
@@ -171,7 +186,7 @@ Router.put(
 Router.delete(
   '/lessons/:id',
   isAuth,
-  isTeacher,
+  isRootOrAdminOrTeacher,
   [
     param('id')
       .notEmpty()

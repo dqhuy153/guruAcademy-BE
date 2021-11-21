@@ -10,20 +10,26 @@ exports.getChapter = async (req, res, next) => {
     const chapterFilterData =
       chapterService.filterChaptersBySlugOrId(chapterSlugOrId);
 
-    const chapter = await Chapter.findOne(chapterFilterData).populate({
-      path: 'courseId',
-      select: ['title', 'description', 'author'],
-      populate: {
-        path: 'author',
-        select: [
-          'email',
-          'firstName',
-          'lastName',
-          'description',
-          'socialLinks',
-        ],
+    const chapter = await Chapter.findOne(chapterFilterData).populate([
+      {
+        path: 'courseId',
+        select: ['title', 'description', 'author'],
+        populate: {
+          path: 'author',
+          select: [
+            'email',
+            'firstName',
+            'lastName',
+            'description',
+            'socialLinks',
+          ],
+        },
       },
-    });
+      {
+        path: 'lessons',
+        select: '-chapter',
+      },
+    ]);
 
     //check chapter exists
     if (!chapter) {
@@ -37,9 +43,10 @@ exports.getChapter = async (req, res, next) => {
     await courseService.findCourseByIdAsync(chapter.courseId);
 
     //check auth who can see this chapter content
+    //admin, root, teacher, student
     await chapterService.checkAuthChapterAsync(
-      req.userId,
-      chapter.courseId._id,
+      req.userId.toString(),
+      chapter.courseId._id.toString(),
       chapter.courseId.author._id.toString()
     );
 
@@ -77,8 +84,8 @@ exports.postNewChapter = async (req, res, next) => {
     const course = await courseService.findCourseByIdAsync(courseId);
 
     //check course's authorization
-    courseService.checkCourseAuthorization(
-      course.author.toString(),
+    await courseService.checkCourseWriteableAsync(
+      course._id.toString(),
       req.userId.toString()
     );
 
@@ -103,8 +110,7 @@ exports.postNewChapter = async (req, res, next) => {
     res.status(201).json({
       message: 'Chapter created successfully!',
       data: {
-        courseId: course._id.toString(),
-        newChapter: chapter,
+        chapter,
         courseChapters: course.chapters,
       },
       success: true,
@@ -152,8 +158,8 @@ exports.updateChapter = async (req, res, next) => {
     // }
 
     //check chapter's authorization
-    await courseService.checkCourseAuthorizationAsync(
-      chapter.courseId,
+    await courseService.checkCourseWriteableAsync(
+      chapter.courseId.toString(),
       req.userId.toString()
     );
 
@@ -197,8 +203,8 @@ exports.deleteChapter = async (req, res, next) => {
     const chapter = await chapterService.findChapterByIdAsync(chapterId);
 
     //check course's authorization
-    await courseService.checkCourseAuthorizationAsync(
-      chapter.courseId,
+    await courseService.checkCourseWriteableAsync(
+      chapter.courseId.toString(),
       req.userId.toString()
     );
 

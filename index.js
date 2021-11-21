@@ -14,6 +14,10 @@ const topicsRoutes = require('./routers/topics');
 const usersRoutes = require('./routers/users');
 const utilsRoutes = require('./routers/utils');
 const searchRoutes = require('./routers/search');
+const testsRoutes = require('./routers/tests');
+const attachmentsRoutes = require('./routers/attachments');
+const commentsRoutes = require('./routers/comments');
+// const feedbackRoutes = require('./routers/feedbacks');
 
 //setup
 const app = express();
@@ -38,6 +42,10 @@ app.use('/api/v1', topicsRoutes);
 app.use('/api/v1', usersRoutes);
 app.use('', utilsRoutes);
 app.use('/api/v1', searchRoutes);
+app.use('/api/v1', testsRoutes);
+app.use('/api/v1', attachmentsRoutes);
+app.use('/api/v1', commentsRoutes);
+// app.use('/api/v1', feedbackRoutes);
 
 //error response
 app.use((error, req, res, next) => {
