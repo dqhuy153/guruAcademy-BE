@@ -1,5 +1,5 @@
 const express = require('express');
-const { body, query } = require('express-validator');
+const { body, query, param } = require('express-validator');
 const multer = require('multer');
 
 const coursesController = require('../controllers/courses');
@@ -225,16 +225,16 @@ Router.post(
   coursesController.postNewCourse
 );
 
-//PUT: /api/v1/courses
+//PUT: /api/v1/courses/:id
 //update course
 //only update data passed into body
 //teacher, admin required
 Router.put(
-  '/courses',
+  '/courses/:id',
   isAuth,
   upload.single('image'),
   [
-    body('id')
+    param('id')
       .notEmpty()
       .withMessage('Course ID is required!')
       .isMongoId()
@@ -312,14 +312,14 @@ Router.put(
   coursesController.updateCourse
 );
 
-//DELETE: /api/v1/courses
+//DELETE: /api/v1/courses/:id
 //delete course
 //teacher, admin required
 Router.delete(
-  '/courses',
+  '/courses/:id',
   isAuth,
   [
-    body('id')
+    param('id')
       .notEmpty()
       .withMessage('Course ID is required!')
       .isMongoId()

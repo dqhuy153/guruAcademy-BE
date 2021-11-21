@@ -197,7 +197,7 @@ exports.postNewTopic = async (req, res, next) => {
 };
 
 exports.updateTopic = async (req, res, next) => {
-  const topicId = req.body.id;
+  const topicId = req.params.id;
 
   //check validation
   const error = validationError(req);
@@ -271,7 +271,7 @@ exports.deleteTopic = async (req, res, next) => {
   const error = validationError(req);
   if (error) return next(error);
 
-  const topicId = req.body.id;
+  const topicId = req.params.id;
 
   try {
     //check authentication

@@ -82,16 +82,15 @@ exports.postNewChapter = async (req, res, next) => {
       req.userId.toString()
     );
 
+    const chapterNumber = course.chapters.length;
+
     //save new chapter
     const chapter = new Chapter({
       courseId,
-      number,
+      number: number ? number : chapterNumber + 1,
       title,
       description,
-      contents: [],
       lessons: [],
-      tests: [],
-      attachments: [],
     });
 
     await chapter.save();
@@ -126,30 +125,31 @@ exports.updateChapter = async (req, res, next) => {
   if (error) return next(error);
 
   //get request's body
-  const chapterId = req.body.id;
+  const chapterId = req.params.id;
+
   const number = req.body.number;
   const title = req.body.title;
   const description = req.body.description;
   const slug = req.body.slug;
   const status = req.body.status;
-  const contents = req.body.contents;
+  const lessons = req.body.lessons;
 
   try {
     //check chapter info
     const chapter = await chapterService.findChapterByIdAsync(chapterId);
 
     //check number's chapter exists
-    const checkNumberChapter = await Chapter.findOne({
-      courseId: chapter.courseId,
-      number,
-    });
+    // const checkNumberChapter = await Chapter.findOne({
+    //   courseId: chapter.courseId,
+    //   number,
+    // });
 
-    if (checkNumberChapter && checkNumberChapter._id.toString() !== chapterId) {
-      const error = new Error(`Chapter number ${number} is exists!`);
-      error.statusCode = 422;
+    // if (checkNumberChapter && checkNumberChapter._id.toString() !== chapterId) {
+    //   const error = new Error(`Chapter number ${number} is exists!`);
+    //   error.statusCode = 422;
 
-      throw error;
-    }
+    //   throw error;
+    // }
 
     //check chapter's authorization
     await courseService.checkCourseAuthorizationAsync(
@@ -164,7 +164,7 @@ exports.updateChapter = async (req, res, next) => {
     if (number !== undefined) chapter.number = number;
     if (slug) chapter.slug = slug;
     if (status !== undefined) chapter.status = status;
-    if (contents !== undefined) chapter.contents = contents;
+    if (lessons !== undefined) chapter.lessons = lessons;
 
     await chapter.save();
 
@@ -190,13 +190,13 @@ exports.deleteChapter = async (req, res, next) => {
   const error = validationError(req);
   if (error) return next(error);
 
-  const chapterId = req.body.id;
+  const chapterId = req.params.id;
 
   try {
     //check chapter info
     const chapter = await chapterService.findChapterByIdAsync(chapterId);
 
-    //check chapter's authorization
+    //check course's authorization
     await courseService.checkCourseAuthorizationAsync(
       chapter.courseId,
       req.userId.toString()

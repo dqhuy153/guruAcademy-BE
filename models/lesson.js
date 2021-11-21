@@ -39,6 +39,9 @@ const lessonSchema = new Schema(
       ref: 'Chapter',
       required: true,
     },
+    attachments: [],
+    tests: [],
+    comments: [],
   },
   {
     timestamps: true,

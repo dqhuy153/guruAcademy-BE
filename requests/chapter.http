@@ -2,46 +2,40 @@
 //get chapter detail
 //teacher, learners of this course, admin, root
 ###
-GET http://localhost:5000/api/v1/chapters/css-la-gi
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0MTEzNjIsImV4cCI6MTYzNzQxODU2Mn0.HDbW2G9OKrQRL54oHDNV01Nu3Q1YON_5IrzVPQ20-NY
+GET http://localhost:5000/api/v1/chapters/6198c31c3738020f67466a69
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
 
 //POST: /api/v1/chapters
 //teacher required
 ###
 POST http://localhost:5000/api/v1/chapters
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0MDAyMDksImV4cCI6MTYzNzQwNzQwOX0.kktsaQu6LFQmIovJTaarxS4rBgeHMqnbRAS6tlcN6qE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
 
 {
   "courseId": "617628e7a710327b33ddb813",
-  "number": 4,
-  "title": "SCSS vs CSS",
+  "title": "SCSS vs CSS vs a",
   "description": "SCSS vs CSS"
 }
 
 //PUT: /api/v1/chapters
 //teacher required
 ###
-PUT http://localhost:5000/api/v1/chapters
+PUT http://localhost:5000/api/v1/chapters/6198c31c3738020f67466a69
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0MDAyMDksImV4cCI6MTYzNzQwNzQwOX0.kktsaQu6LFQmIovJTaarxS4rBgeHMqnbRAS6tlcN6qE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjkyNzgsImV4cCI6MTYzNzU1NTY3OH0.zgsP8osRXU4n6DY6PzsPZ1pSoKYSuTprKKfywM7TzA4
 
 {
-  "id": "6198c3433738020f67466a77",
-  "number": 3,
-  "title": "SASS là gì?",
-  "description": "SASS là gì?",
+  "number": 1,
+  "title": "Giới thiệu khóa học CSS",
+  "description": "Khóa học này về gì?",
   "status": 1,
-  "slug": "SASS"
+  "slug": "Gioi-thieu-khoa-hoc",
+  "lessons": ["6199b76561030a31b6f263dc", "6199b75d61030a31b6f263d1"]
 }
 
 //DELETE: /api/v1/chapters
 //teacher required
 ###
-DELETE http://localhost:5000/api/v1/chapters
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0MDAyMDksImV4cCI6MTYzNzQwNzQwOX0.kktsaQu6LFQmIovJTaarxS4rBgeHMqnbRAS6tlcN6qE
-
-{
-  "id": "6198c6fa75a775188e82c4a1"
-}
+DELETE http://localhost:5000/api/v1/chapters/6199afcfe06c1f932ff0b7f4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjkyNzgsImV4cCI6MTYzNzU1NTY3OH0.zgsP8osRXU4n6DY6PzsPZ1pSoKYSuTprKKfywM7TzA4

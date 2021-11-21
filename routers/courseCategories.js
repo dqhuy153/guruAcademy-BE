@@ -1,5 +1,5 @@
 const express = require('express');
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 const mongoose = require('mongoose');
 
 const courseCategoriesController = require('../controllers/courseCategories');
@@ -70,14 +70,14 @@ Router.post(
   courseCategoriesController.postCourseCategory
 );
 
-//PUT: /api/v1/course-categories
+//PUT: /api/v1/course-categories/:id
 //admin required
 //Update category info
 Router.put(
-  '/course-categories',
+  '/course-categories/:id',
   isAuth,
   [
-    body('id')
+    param('id')
       .notEmpty()
       .withMessage('CourseId is required.')
       .isMongoId()
@@ -88,7 +88,7 @@ Router.put(
       .withMessage('Title is required.')
       .trim()
       .custom((value, { req }) => {
-        const categoryId = new mongoose.Types.ObjectId(req.body.id);
+        const categoryId = new mongoose.Types.ObjectId(req.params.id);
 
         return CourseCategory.findOne({
           title: value,
@@ -127,7 +127,7 @@ Router.put(
       .custom((value, { req }) => {
         return CourseCategory.findOne({
           _id: {
-            $ne: new mongoose.Types.ObjectId(req.body.id),
+            $ne: new mongoose.Types.ObjectId(req.params.id),
           },
           slug: value,
         }).then((categoryDoc) => {
@@ -140,15 +140,15 @@ Router.put(
   courseCategoriesController.updateCourseCategory
 );
 
-//DELETE: /api/v1/course-categories
+//DELETE: /api/v1/course-categories/:id
 //admin required
 Router.delete(
-  '/course-categories',
+  '/course-categories/:id',
   isAuth,
   [
-    body('id')
+    param('id')
       .notEmpty()
-      .withMessage('CourseId is required.')
+      .withMessage('Category Id is required.')
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId.'),
   ],

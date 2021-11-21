@@ -1,11 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 
 const chaptersController = require('../controllers/chapters');
 const isAuth = require('../middleware/isAuth');
 const Chapter = require('../models/chapter');
 const { isTeacher } = require('../middleware/authRole');
+const Lesson = require('../models/lesson');
 
 const Router = express.Router();
 
@@ -27,6 +28,7 @@ Router.post(
       .withMessage('Invalid type. Expected an ObjectId.'),
 
     body('number')
+      .if((value) => value !== undefined)
       .notEmpty()
       .withMessage("Chapter's number is required.")
       .isInt({
@@ -51,16 +53,16 @@ Router.post(
   chaptersController.postNewChapter
 );
 
-//PUT: /api/v1/chapters
+//PUT: /api/v1/chapters/:id
 //teacher required
 Router.put(
-  '/chapters',
+  '/chapters/:id',
   isAuth,
   isTeacher,
   [
-    body('id')
+    param('id')
       .notEmpty()
-      .withMessage('CourseId is required.')
+      .withMessage('Chapter Id is required.')
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId.'),
 
@@ -68,7 +70,7 @@ Router.put(
       .if((value) => value !== undefined)
       .notEmpty()
       .withMessage("Chapter's number is required.")
-      .isNumeric()
+      .isInt({ min: 0 })
       .withMessage('Invalid type. Expected an Number.'),
 
     body('title')
@@ -104,44 +106,45 @@ Router.put(
       .isInt({ max: 1, min: 0 })
       .withMessage('Status only excepts value: 0 & 1'),
 
-    body('contents')
+    body('lessons')
       .if((value) => value !== undefined)
       .notEmpty()
-      .withMessage('Chapter contents is required.')
+      .withMessage('Chapter lessons is required.')
       .isArray()
       .withMessage('Invalid type. Expected an Array.'),
 
-    body('contents[*].typeId')
+    body('lessons[*]')
       .if(
         (value, { req }) =>
-          req.body.contents !== undefined || req.body.contents !== []
+          req.body.lessons !== undefined || req.body.lessons !== []
       )
       .notEmpty()
-      .withMessage('Type ID of content is required.')
-      .isInt({ min: 0, max: 2 })
-      .withMessage('Invalid type. Expected an Integer between 0 and 2.'),
-
-    body('contents[*].contentId')
-      .if(
-        (value, { req }) =>
-          req.body.contents !== undefined || req.body.contents !== []
-      )
-      .notEmpty()
-      .withMessage('Content ID is required.')
+      .withMessage('Type ID of lesson is required.')
       .isMongoId()
-      .withMessage('Invalid type. Expected an ObjectId.'),
+      .withMessage('Invalid type. Expected an ObjectId.')
+      .custom((value, { req }) => {
+        return Lesson.findById(value).then((lessonDoc) => {
+          if (!lessonDoc) {
+            return Promise.reject(`Lesson ${value} is not exists!`);
+          }
+
+          if (lessonDoc.chapter.toString() !== req.params.id) {
+            return Promise.reject(`Lesson ${value} is not in this chapter!`);
+          }
+        });
+      }),
   ],
   chaptersController.updateChapter
 );
 
-//DELETE: /api/v1/chapters
+//DELETE: /api/v1/chapters/:id
 //teacher required
 Router.delete(
-  '/chapters',
+  '/chapters/:id',
   isAuth,
   isTeacher,
   [
-    body('id')
+    param('id')
       .notEmpty()
       .withMessage('CourseId is required.')
       .isMongoId()

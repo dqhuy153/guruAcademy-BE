@@ -1,5 +1,42 @@
 //GET: /api/v1/lessons/:lessonSlugOrId
 //authentication require
 ###
-GET http://localhost:5000/api/v1/lessons/css-la-gi
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0MTEzNjIsImV4cCI6MTYzNzQxODU2Mn0.HDbW2G9OKrQRL54oHDNV01Nu3Q1YON_5IrzVPQ20-NY
+GET http://localhost:5000/api/v1/lessons/6199b600f4c7faf3e6219b59
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
+
+//POST: /api/v1/lessons
+//teacher required
+###
+POST http://localhost:5000/api/v1/lessons
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
+
+{
+  "title": "Lesson 3", 
+  "description": "Introduce 3", 
+  "chapterId": "6198c31c3738020f67466a69"
+}
+
+//PUT: /api/v1/lessons
+//teacher required
+###
+PUT http://localhost:5000/api/v1/lessons
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
+
+{
+  "title": "Lesson 3", 
+  "description": "Introduce 3", 
+  "chapterId": "6198c31c3738020f67466a69"
+}
+
+//DELETE: /api/v1/lessons
+//teacher required
+###
+DELETE http://localhost:5000/api/v1/lessons
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0NjA1NDMsImV4cCI6MTYzNzQ2Nzc0M30.qjTEi7yZSxW-h-uM7VuMftgJ5rbrpR6Yy86L_MIWRVg
+
+{
+  "id": "6199b600f4c7faf3e6219b59"
+}

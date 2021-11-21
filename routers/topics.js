@@ -1,5 +1,5 @@
 const express = require('express');
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 const mongoose = require('mongoose');
 
 const topicsController = require('../controllers/topics');
@@ -55,13 +55,13 @@ Router.post(
   topicsController.postNewTopic
 );
 
-//PUT: /api/v1/topics
+//PUT: /api/v1/topics/:id
 //admin required
 Router.put(
-  '/topics',
+  '/topics/:id',
   isAuth,
   [
-    body('id')
+    param('id')
       .notEmpty()
       .withMessage('CourseId is required.')
       .isMongoId()
@@ -72,7 +72,7 @@ Router.put(
       .withMessage("Topic's title is required.")
       .trim()
       .custom((value, { req }) => {
-        const topicId = new mongoose.Types.ObjectId(req.body.id);
+        const topicId = new mongoose.Types.ObjectId(req.params.id);
 
         return Topic.findOne({
           title: value,
@@ -111,7 +111,7 @@ Router.put(
       .custom((value, { req }) => {
         return Topic.findOne({
           _id: {
-            $ne: new mongoose.Types.ObjectId(req.body.id),
+            $ne: new mongoose.Types.ObjectId(req.params.id),
           },
           slug: value,
         }).then((topicDoc) => {
@@ -124,13 +124,13 @@ Router.put(
   topicsController.updateTopic
 );
 
-//DELETE: /api/v1/topics
+//DELETE: /api/v1/topics/:id
 //admin required
 Router.delete(
-  '/topics',
+  '/topics/:id',
   isAuth,
   [
-    body('id')
+    param('id')
       .notEmpty()
       .withMessage('CourseId is required.')
       .isMongoId()

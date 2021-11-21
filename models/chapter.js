@@ -14,7 +14,7 @@ const chapterSchema = new Schema(
     },
     number: {
       type: Number,
-      required: true,
+      required: false,
     },
     title: {
       type: String,
@@ -35,22 +35,7 @@ const chapterSchema = new Schema(
       required: true,
       default: 1,
     },
-    contents: [
-      {
-        typeName: {
-          type: String,
-        },
-        typeId: {
-          type: Number,
-        },
-        contentId: {
-          type: String,
-        },
-      },
-    ],
     lessons: [],
-    tests: [],
-    attachments: [],
   },
   {
     timestamps: true,

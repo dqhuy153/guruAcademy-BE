@@ -77,10 +77,10 @@ const courseDetailSchema = new Schema(
         },
       },
     ],
-    isDone: {
-      type: Boolean,
+    progress: {
+      type: Schema.Types.ObjectId,
+      ref: 'Lesson',
       require: true,
-      default: false,
     },
     status: {
       type: Number,

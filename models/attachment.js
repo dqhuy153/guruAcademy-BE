@@ -25,9 +25,9 @@ const attachmentSchema = new Schema(
       required: true,
       default: 1,
     },
-    chapter: {
+    lesson: {
       type: Schema.Types.ObjectId,
-      ref: 'Chapter',
+      ref: 'Lesson',
       required: true,
     },
   },

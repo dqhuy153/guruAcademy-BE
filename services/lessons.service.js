@@ -13,6 +13,15 @@ const findLessonByIdAsync = async (lessonId) => {
   return lesson;
 };
 
+const findLessonByIdAndDeleteAsync = async (lessonId) => {
+  try {
+    await Lesson.findByIdAndDelete(lessonId);
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   findLessonByIdAsync,
+  findLessonByIdAndDeleteAsync,
 };

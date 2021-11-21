@@ -157,7 +157,7 @@ exports.deleteNotification = async (req, res, next) => {
   const error = validationError(req);
   if (error) return next(error);
 
-  const notificationId = req.body.id;
+  const notificationId = req.params.id;
 
   try {
     //check authentication

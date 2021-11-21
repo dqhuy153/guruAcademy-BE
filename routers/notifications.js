@@ -1,5 +1,5 @@
 const express = require('express');
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 
 const notificationsController = require('../controllers/notifications');
 const isAuth = require('../middleware/isAuth');
@@ -18,13 +18,13 @@ Router.get(
   notificationsController.getNotification
 );
 
-//DELETE: /api/v1/notifications
+//DELETE: /api/v1/notifications/:id
 //authentication require
 Router.delete(
-  '/notifications',
+  '/notifications/:id',
   isAuth,
   [
-    body('id')
+    param('id')
       .notEmpty()
       .withMessage('CourseId is required.')
       .isMongoId()

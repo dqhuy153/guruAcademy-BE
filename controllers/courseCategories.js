@@ -167,8 +167,9 @@ exports.updateCourseCategory = async (req, res, next) => {
   const error = validationError(req);
   if (error) return next(error);
 
+  const categoryId = req.params.id;
+
   //get request's body
-  const categoryId = req.body.id;
   const updatedTitle = req.body.title;
   const updatedDiscountPercent = req.body.discountPercent;
   const updatedStatus = req.body.status;
@@ -233,7 +234,7 @@ exports.deleteCourseCategory = async (req, res, next) => {
   const error = validationError(req);
   if (error) return next(error);
 
-  const categoryId = req.body.id;
+  const categoryId = req.params.id;
 
   try {
     //check authentication

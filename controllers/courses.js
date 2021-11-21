@@ -268,6 +268,16 @@ exports.getCoursesByTopic = async (req, res, next) => {
 //public
 exports.getCourse = async (req, res, next) => {
   const courseSlugOrId = req.params.courseSlugOrId;
+  const sortQuery = req.query.sort; //?sort=num
+  let sort;
+
+  if (sortQuery === 'num') {
+    sort = { number: 1 };
+  }
+
+  if (sortQuery === 'date') {
+    sort = { createdAt: 1 };
+  }
 
   try {
     //get course
@@ -306,7 +316,7 @@ exports.getCourse = async (req, res, next) => {
           '-videos.url',
           '-attachments.url',
         ],
-        options: { sort: { number: 1 } },
+        options: { sort: sort },
       },
       {
         path: 'streams',
@@ -346,6 +356,16 @@ exports.getCourse = async (req, res, next) => {
 //authorization: learnerDetails, teacher, admin, root
 exports.getCourseChapters = async (req, res, next) => {
   const courseSlugOrId = req.params.courseSlugOrId;
+  const sortQuery = req.query.sort; //?sort=num
+  let sort;
+
+  if (sortQuery === 'num') {
+    sort = { number: 1 };
+  }
+
+  if (sortQuery === 'date') {
+    sort = { createdAt: 1 };
+  }
 
   try {
     //check authentication
@@ -391,7 +411,7 @@ exports.getCourseChapters = async (req, res, next) => {
         {
           path: 'chapters',
           select: ['-courseId'],
-          options: { sort: { number: 1 } },
+          options: { sort: sort },
         },
       ]);
 
@@ -977,7 +997,7 @@ exports.updateCourse = async (req, res, next) => {
   if (error) return next(error);
 
   //get request's body
-  const courseId = req.body.id;
+  const courseId = req.params.id;
   const title = req.body.title;
   const description = req.body.description;
   const slug = req.body.slug;
@@ -1148,7 +1168,7 @@ exports.deleteCourse = async (req, res, next) => {
   if (error) return next(error);
 
   //get request's body
-  const courseId = req.body.id;
+  const courseId = req.params.id;
 
   try {
     //check authentication

@@ -19,7 +19,7 @@ const CourseStatus = {
 
 const JwtConstants = {
   SECRET: process.env.ACCESS_TOKEN_SECRET,
-  EXPIRED_TIME: '2h',
+  EXPIRED_TIME: '24h',
 };
 
 module.exports = {
