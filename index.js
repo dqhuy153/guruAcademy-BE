@@ -22,8 +22,7 @@ const commentsRoutes = require('./routers/comments');
 //setup
 const app = express();
 const PORT = process.env.PORT || 5000;
-const mongodbUri =
-  'mongodb+srv://tich-hop:guruacadamy@cluster0.9vllm.mongodb.net/guruAcademy?retryWrites=true&w=majority';
+const mongodbUri = process.env.MONGODB_URI;
 
 //middleware
 app.use(cors());

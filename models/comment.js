@@ -25,7 +25,7 @@ const commentSchema = new Schema(
     },
     dateTime: {
       type: Date,
-      default: Date.now,
+      default: Date.now(),
     },
   },
   {
