@@ -11,7 +11,7 @@ exports.getUserAllInfo = async (req, res, next) => {
   try {
     //check user
     const user = await User.findById(req.userId)
-      .select(['-password'])
+      .select(['-password', '-__v'])
       .populate({
         path: 'teachingCourses',
         select: ['-author'],
@@ -28,7 +28,14 @@ exports.getUserAllInfo = async (req, res, next) => {
         },
       })
       .populate('learningCourses')
-      .populate('notifications')
+      .populate({
+        path: 'notifications',
+        select: '-__v',
+        populate: {
+          path: 'userId',
+          select: ['firstName', 'lastName', 'email', 'status'],
+        },
+      })
 
     if (!user) {
       const error = new Error(`Account with email "${email}" not found!`)
