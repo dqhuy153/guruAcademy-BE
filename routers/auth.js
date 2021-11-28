@@ -1,10 +1,10 @@
-const express = require('express');
-const { body } = require('express-validator');
+const express = require('express')
+const { body } = require('express-validator')
 
-const authController = require('../controllers/auth');
-const isAuth = require('../middleware/isAuth');
-const User = require('../models/user');
-const Router = express.Router();
+const authController = require('../controllers/auth')
+const isAuth = require('../middleware/isAuth')
+const User = require('../models/user')
+const Router = express.Router()
 
 //POST: api/v1/auth/login
 Router.post(
@@ -24,7 +24,7 @@ Router.post(
 
   //API handler
   authController.login
-);
+)
 
 //POST: api/v1/auth/signup
 Router.post(
@@ -43,11 +43,11 @@ Router.post(
           if (userDoc) {
             return Promise.reject(
               `An account with email "${value}" is already exists`
-            );
+            )
           }
-        });
+        })
       })
-      .normalizeEmail(),
+      .normalizeEmail({ gmail_remove_dots: false }),
 
     body('password')
       .notEmpty()
@@ -81,7 +81,7 @@ Router.post(
 
   //API handler
   authController.signup
-);
+)
 
 //POST: api/v1/auth/check
 //check user's authentication by jwt token (in req's header)
@@ -90,9 +90,9 @@ Router.get('/check', isAuth, (req, res, next) =>
     message: 'User checked successfully!',
     success: true,
   })
-);
+)
 
 //GET: api/v1/auth
-Router.get('/', isAuth, authController.getUser);
+Router.get('/', isAuth, authController.getUser)
 
-module.exports = Router;
+module.exports = Router

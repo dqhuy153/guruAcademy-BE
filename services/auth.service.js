@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../models/user')
 
 const UserRole = {
   ROOT: {
@@ -17,80 +17,80 @@ const UserRole = {
     id: 3,
     name: 'teacher',
   },
-};
+}
 
 const findUserByIdAsync = async (userId) => {
-  const user = await User.findById(userId);
+  const user = await User.findById(userId)
 
   if (!user) {
-    const error = new Error('Authentication failed!');
-    error.statusCode = 401;
-    throw error;
+    const error = new Error('Authentication failed!')
+    error.statusCode = 401
+    throw error
   }
 
-  return user;
-};
+  return user
+}
 
 const checkRoleAsync = async (userId) => {
-  const user = await findUserByIdAsync(userId);
-  return user.role.id;
-};
+  const user = await findUserByIdAsync(userId)
+  return user.role.id
+}
 
 const isRootAsync = async (userId) => {
   if ((await checkRoleAsync(userId)) === UserRole.ROOT.id) {
-    return true;
+    return true
   }
-  return false;
-};
+  return false
+}
 
 const isRoot = (roleId) => {
   if (roleId === UserRole.ROOT.id) {
-    return true;
+    return true
   }
-  return false;
-};
+  return false
+}
 
 const isAdminAsync = async (userId) => {
   if ((await checkRoleAsync(userId)) === UserRole.ADMIN.id) {
-    return true;
+    return true
   }
-  return false;
-};
+  return false
+}
 
 const isAdmin = (roleId) => {
   if (roleId === UserRole.ADMIN.id) {
-    return true;
+    return true
   }
-  return false;
-};
+  return false
+}
 
 const isLearnerAsync = async (userId) => {
   if ((await checkRoleAsync(userId)) === UserRole.LEARNER.id) {
-    return true;
+    return true
   }
-  return false;
-};
+  return false
+}
 
 const isLearner = (roleId) => {
   if (roleId === UserRole.LEARNER.id) {
-    return true;
+    return true
   }
-  return false;
-};
+  return false
+}
 
 const isTeacherAsync = async (userId) => {
   if ((await checkRoleAsync(userId)) === UserRole.TEACHER.id) {
-    return true;
+    return true
   }
-  return false;
-};
+  return false
+}
 
 const isTeacher = (roleId) => {
   if (roleId === UserRole.TEACHER.id) {
-    return true;
+    return true
   }
-  return false;
-};
+  return false
+}
 
 module.exports = {
   UserRole,
@@ -104,4 +104,4 @@ module.exports = {
   isLearnerAsync,
   isTeacher,
   isTeacherAsync,
-};
+}

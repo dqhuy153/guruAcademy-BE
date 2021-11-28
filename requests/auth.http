@@ -4,7 +4,7 @@ POST http://localhost:5000/api/v1/auth/login
 content-type: application/json
 
 {
-    "email": "teacher@gmail.com",
+    "email": "dqhuy.dev@gmail.com",
     "password": "123456"
 }
 ###
@@ -12,7 +12,7 @@ POST http://localhost:5000/api/v1/auth/signup
 content-type: application/json
 
 {
-    "email": "dqhuy@gmail.com",
+    "email": "dqhuy.dev@gmail.com",
     "password": "123456",
     "firstName": "Huy",
     "lastName": "Dang Quang",
