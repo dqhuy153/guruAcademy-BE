@@ -1,4 +1,4 @@
-
+const { v4: uuidv4 } = require("uuid");
 
  //set up camera
 exports.init = async () => {

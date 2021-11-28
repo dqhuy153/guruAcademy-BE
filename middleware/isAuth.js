@@ -1,13 +1,13 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const User = require('../models/user');
+const User = require("../models/user");
 
 module.exports = async (req, res, next) => {
-  const authHeader = req.header('Authorization');
-  const token = authHeader && authHeader.split(' ')[1]; //header: {'Authorization': 'Bearer token'}
+  const authHeader = req.header("Authorization");
+  const token = authHeader && authHeader.split(" ")[1]; //header: {'Authorization': 'Bearer token'}
 
   if (!token) {
-    const error = new Error('Access token not found.');
+    const error = new Error("Access token not found.");
 
     error.statusCode = 401;
     error.success = false;
@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
   }
 
   if (!decodedToken) {
-    const error = new Error('Not authenticated.');
+    const error = new Error("Not authenticated.");
     error.statusCode = 403;
     error.success = false;
 
@@ -39,7 +39,7 @@ module.exports = async (req, res, next) => {
   const user = await User.findById(userId);
 
   if (!user) {
-    const error = new Error('Authentication failed!');
+    const error = new Error("Authentication failed!");
     error.statusCode = 401;
 
     return next(error);
