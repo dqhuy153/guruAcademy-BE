@@ -6,6 +6,8 @@ exports.getUsers = async (req, res, next) => {
   // ?role=root
   // ?role=teacher
   // ?role=learner
+  const currentPage = +req.query.page || 1
+  const coursePerPage = +req.query.count || null
 
   let query
   if (role) {
@@ -14,11 +16,13 @@ exports.getUsers = async (req, res, next) => {
 
   try {
     //check user
-    const users = await User.find(query).select([
-      '-password',
-      '-__v',
-      '-notifications',
-    ])
+    const totalUsers = await User.find().countDocuments()
+
+    const users = await User.find(query)
+      .select(['-password', '-__v', '-notifications'])
+      .sort({ createdAt: -1 })
+      .skip((currentPage - 1) * coursePerPage)
+      .limit(coursePerPage)
 
     const usersData = users.map(user => {
       return {
@@ -35,6 +39,7 @@ exports.getUsers = async (req, res, next) => {
       message: 'Fetch users profile successfully!',
       data: {
         users: usersData,
+        totalUsers,
       },
       success: true,
     })
