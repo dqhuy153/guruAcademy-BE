@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const { validationError, unlinkPath } = require('../util/helper')
 const User = require('../models/user')
 const { uploadFile, removeFile } = require('../services/s3')
+const { UserRole } = require('../services/auth.service')
 
 //setup unlinked files
 
@@ -532,12 +533,15 @@ exports.adminUpdateUserProfile = async (req, res, next) => {
   if (error) return next(error)
 
   //get req's body
+  const userId = req.body.userId
+  const email = req.body.email
   const firstName = req.body.firstName
   const lastName = req.body.lastName
   const dateOfBirth = req.body.dateOfBirth
   const description = req.body.description
   const status = req.body.status
   const phoneNumber = req.body.phoneNumber
+  const role = req.body.role
 
   const socialLinks = req.body.socialLinks
   //socialLinks: {facebook: String, instagram: String, linkedIn: String, github: String, twitter: String}
@@ -546,87 +550,105 @@ exports.adminUpdateUserProfile = async (req, res, next) => {
   //address: {street: String, city: String, country: String}
 
   const imageUrl = req.body.imageUrl
-
-  const oldPassword = req.body.oldPassword
   const newPassword = req.body.newPassword
+  const imageFile = req.file
 
   try {
-    //check authentication
-    const user = await User.findById(req.userId)
+    let user
+    //update user profile here
 
-    if (!user) {
-      const error = new Error('Authentication failed!')
-      error.statusCode = 401
+    //check image file and post it to s3
+    let uploadS3Result
+    if (imageFile) {
+      //remove old image file
+      await removeFile(user.imageUrl.split('/')[2])
 
-      throw error
+      //upload new image file
+      uploadS3Result = await uploadFile(imageFile)
+
+      //unlink image from local path (./upload)
+      await unlinkPath(imageFile.path)
     }
 
-    //check status
-    if (user.status === 0 || user.status === 10) {
-      const error = new Error(
-        'Your account has been suspended. Please contact with us if it have any mistake!'
-      )
-      error.statusCode = 403
+    let roleData
 
-      throw error
+    if (role === UserRole.ADMIN.id) {
+      roleData = UserRole.ADMIN
     }
 
-    //check user try to change status
-    //only admin or root users can change status
-    if (status !== undefined && user.role.id !== 1 && user.role.id !== 0) {
-      const error = new Error('You can not change the status of your account!')
-      error.statusCode = 403
-
-      throw error
+    if (role === UserRole.LEARNER.id) {
+      roleData = UserRole.LEARNER
     }
 
-    //check password change request
-    if ((!oldPassword && newPassword) || (oldPassword && !newPassword)) {
-      const error = new Error(
-        'Missing "oldPassword" or "newPassword" property for change password request!'
-      )
-      error.statusCode = 422
-
-      throw error
+    if (role === UserRole.TEACHER.id) {
+      roleData = UserRole.TEACHER
     }
 
-    //check password
-    let hashedNewPassword
+    if (userId) {
+      //check authentication
+      user = await User.findById(userId)
 
-    if (oldPassword && newPassword) {
-      const isMatchPassword = bcrypt.compareSync(oldPassword, user.password)
-      if (!isMatchPassword) {
-        const error = new Error('Incorrect old password!')
+      if (!user) {
+        const error = new Error('User not found!')
         error.statusCode = 401
 
         throw error
       }
 
-      //change new password
-      hashedNewPassword = bcrypt.hashSync(newPassword, 12)
+      //check password
+      let hashedNewPassword
+
+      if (newPassword) {
+        //change new password
+        hashedNewPassword = bcrypt.hashSync(newPassword, 12)
+      }
+
+      //update user profile here
+      if (firstName !== undefined) user.firstName = firstName
+      if (lastName !== undefined) user.lastName = lastName
+      if (dateOfBirth !== undefined) user.dateOfBirth = dateOfBirth
+      if (description !== undefined) user.description = description
+      if (status !== undefined) user.status = status
+      if (socialLinks !== undefined) user.socialLinks = socialLinks
+      if (address !== undefined) user.address = address
+      if (phoneNumber !== undefined) user.phoneNumber = phoneNumber
+      if (role !== undefined) user.role = roleData
+      if (imageUrl !== undefined) user.imageUrl = imageUrl
+      if (uploadS3Result) user.imageUrl = `/files/${uploadS3Result.Key}`
+      if (hashedNewPassword !== undefined) user.password = hashedNewPassword
+
+      await user.save()
     }
+    //create new user here
+    else {
+      const hashedPassword = bcrypt.hashSync(newPassword, 12)
 
-    //update user profile here
-    if (firstName) user.firstName = firstName
-    if (lastName) user.lastName = lastName
-    if (dateOfBirth !== undefined) user.dateOfBirth = dateOfBirth
-    if (description !== undefined) user.description = description
-    if (status !== undefined) user.status = status
-    if (socialLinks !== undefined) user.socialLinks = socialLinks
-    if (address !== undefined) user.address = address
-    if (phoneNumber !== undefined) user.phoneNumber = phoneNumber
+      user = new User({
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        dateOfBirth,
+        address,
+        role: roleData,
+        status,
+        phoneNumber,
+        imageUrl: uploadS3Result ? `/files/${uploadS3Result.Key}` : '',
+        description,
+        socialLinks,
+        learningCourses: [],
+        teachingCourses: [],
+        notifications: [],
+      })
 
-    if (imageUrl !== undefined) user.imageUrl = imageUrl
-
-    if (hashedNewPassword) user.password = hashedNewPassword
-
-    await user.save()
+      await user.save()
+    }
 
     //send response
     res.status(201).json({
       message: 'User profile updated successfully!',
       data: {
-        userId: user._id,
+        user,
       },
       success: true,
     })

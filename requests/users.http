@@ -3,7 +3,7 @@
 //get all information of user
 ###
 GET http://localhost:5000/api/v1/users/all-info
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJmaXJzdE5hbWUiOiJ0b25pIiwibGFzdE5hbWUiOiJkZXYiLCJpYXQiOjE2MzgwOTM1OTAsImV4cCI6MTYzODEwNzk5MH0.B5elC70hWq35f7oKu4p6kVj3_W9MMd6JRDCop2PImPU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXIyQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDYwNTZlNzJlNGM5Yjc2MDI5NTYwNSIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MywibmFtZSI6InRlYWNoZXIifSwiZmlyc3ROYW1lIjoiUXVhbmcgSHV5IiwibGFzdE5hbWUiOiJEYW5nIiwiaWF0IjoxNjM4NTQ0NTE5LCJleHAiOjE2Mzg1NTg5MTl9.bTc9rY5fpVa8yh77vm110lCh1FfHtPLpqqzYilD39Ko
 
 //GET: /api/v1/users/profile
 //Authentication
@@ -71,6 +71,84 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYXJuZ
 }
 
 ###
-GET http://localhost:5000/api/v1/courses/react-advanced-2022/chapters
+GET http://localhost:5000/api/v1/admin/users
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYXJuZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE0YjM2NjZiMTBkYmE0NzNjNzM2NjkyIiwic3RhdHVzIjoxLCJyb2xlIjp7ImlkIjoyLCJuYW1lIjoibGVhcm5lciJ9LCJpYXQiOjE2MzQ5OTQzMzYsImV4cCI6MTYzNTAwMTUzNn0.C08EVSUK-2XY0L4wuMnkO7ipGMth89EXBwHuXkPUGzs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzg2MjkwOTMsImV4cCI6MTYzODY0MzQ5M30.4PJzYrjplZx0A7ryXRSl3UqA_4FsETwMN3DNjcjdWFk
+
+//Post new user from admin
+###
+POST http://localhost:5000/api/v1/admin/users/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzg2MjkwOTMsImV4cCI6MTYzODY0MzQ5M30.4PJzYrjplZx0A7ryXRSl3UqA_4FsETwMN3DNjcjdWFk
+
+{
+  //"userId": "",
+  "email": "abc@gmail.com",
+  "firstName": "A",
+  "lastName": "Nguyen",
+  "dateOfBirth": "3/15/1999",
+  "description": "Test",
+  "status": 1,
+  "phoneNumber": "0783465975",
+  "role": 2,
+  //socialLinks: {facebook: String, instagram: String, linkedIn: String, github: String, twitter: String}
+  "socialLinks": {
+    "facebook": "http://facebook.com/abc",
+    "instagram": "http://instagram.com/abc",
+    "linkedIn": "http://linkedin.com/abc",
+    "github": null,
+    "twitter": null
+  },
+  //address: {street: String, city: String, country: String}
+  "address": {
+    "street": "123",
+    "city": "Hanoi",
+    "country": "Vietnam"
+  },
+  "newPassword": "123456",
+  "imageUrl": ""
+}
+
+//Post new user from admin
+###
+POST http://localhost:5000/api/v1/admin/users/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzg2MjkwOTMsImV4cCI6MTYzODY0MzQ5M30.4PJzYrjplZx0A7ryXRSl3UqA_4FsETwMN3DNjcjdWFk
+
+{
+  "userId": "61ab8591e02b3b3f33f9f27b",
+  //"email": "abc@gmail.com",
+  "firstName": "B",
+  "lastName": "Nguyen",
+  "dateOfBirth": "5/15/1999",
+  "description": "Test 123",
+  "status": 2,
+  "phoneNumber": "0783465975",
+  "role": 1,
+  //socialLinks: {facebook: String, instagram: String, linkedIn: String, github: String, twitter: String}
+  "socialLinks": {
+    "facebook": "http://facebook.com/abc",
+    "instagram": null,
+    "linkedIn": "http://linkedin.com/abc",
+    "github": null,
+    "twitter": null
+  },
+  //address: {street: String, city: String, country: String}
+  "address": {
+    "street": "12345",
+    "city": "Hanoi",
+    "country": "Vietnam"
+  },
+  "newPassword": "123456",
+  "imageUrl": ""
+}
+
+###
+POST http://localhost:5000/api/v1/admin/users/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzg2MjkwOTMsImV4cCI6MTYzODY0MzQ5M30.4PJzYrjplZx0A7ryXRSl3UqA_4FsETwMN3DNjcjdWFk
+
+{
+  "userId": "61ab8591e02b3b3f33f9f27b",
+  "newPassword": "12345678"
+}
