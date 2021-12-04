@@ -16,6 +16,7 @@ exports.getUsers = async (req, res, next) => {
 
   try {
     //check user
+    const totalUsers = await User.find(query).countDocuments()
 
     const users = await User.find(query)
       .select(['-password', '-__v', '-notifications'])
@@ -32,8 +33,6 @@ exports.getUsers = async (req, res, next) => {
         teachingCourses: undefined,
       }
     })
-
-    const totalUsers = users.length
 
     //send response
     res.status(200).json({
