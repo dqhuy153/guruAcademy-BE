@@ -5,6 +5,7 @@ const multer = require('multer')
 const usersController = require('../controllers/users')
 const { isRootOrAdmin } = require('../middleware/authRole')
 const isAuth = require('../middleware/isAuth')
+const User = require('../models/user')
 
 const Router = express.Router()
 
@@ -205,6 +206,23 @@ Router.post(
       .if(value => value !== undefined)
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId.'),
+
+    body('email')
+      .if((value, { req }) => req.body.userId === undefined || null || '')
+      .notEmpty()
+      .withMessage('Email is required!')
+      .isEmail()
+      .withMessage('Invalid email!')
+      .custom((value, { req }) => {
+        return User.findOne({ email: value }).then(userDoc => {
+          if (userDoc) {
+            return Promise.reject(
+              `An account with email "${value}" is already exists`
+            )
+          }
+        })
+      })
+      .normalizeEmail({ gmail_remove_dots: false }),
 
     body('firstName')
       .if(value => value !== undefined)
