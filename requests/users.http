@@ -150,5 +150,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
 
 {
   "userId": "61ab8591e02b3b3f33f9f27b",
-  "newPassword": "12345678"
+  "newPassword": "123456"
 }

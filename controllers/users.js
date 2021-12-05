@@ -660,3 +660,41 @@ exports.adminUpdateUserProfile = async (req, res, next) => {
     next(error)
   }
 }
+
+exports.adminDeleteUser = async (req, res, next) => {
+  //check validation
+  const error = validationError(req)
+  if (error) return next(error)
+
+  const userId = req.params.id
+
+  try {
+    //check authentication
+    const user = await User.findById(userId)
+
+    if (!user) {
+      const error = new Error('User not found!')
+      error.statusCode = 401
+
+      throw error
+    }
+
+    //delete user here
+    await User.findByIdAndDelete(userId)
+
+    //send response
+    res.status(201).json({
+      message: 'User deleted successfully!',
+      data: {
+        userId,
+      },
+      success: true,
+    })
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500
+    }
+
+    next(error)
+  }
+}

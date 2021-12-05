@@ -1,5 +1,5 @@
 const express = require('express')
-const { body } = require('express-validator')
+const { body, param } = require('express-validator')
 const multer = require('multer')
 
 const usersController = require('../controllers/users')
@@ -192,7 +192,7 @@ Router.put(
 // Router.put('/users/forgot-password', isAuth, usersController.forgotUserPassword);
 
 //*** */
-//PUT: /api/v1/admin/users/profile
+//POST: /api/v1/admin/users/profile
 //admin & root required
 //update user profile
 Router.post(
@@ -304,6 +304,18 @@ Router.post(
       .withMessage('Minimum password is 5'),
   ],
   usersController.adminUpdateUserProfile
+)
+
+//*** */
+//DELETE: /api/v1/admin/users/:id
+//admin & root required
+//delete user
+Router.delete(
+  '/admin/users/:id',
+  isAuth,
+  isRootOrAdmin,
+  [param('id').isMongoId().withMessage('Invalid type. Expected an ObjectId.')],
+  usersController.adminDeleteUser
 )
 
 module.exports = Router

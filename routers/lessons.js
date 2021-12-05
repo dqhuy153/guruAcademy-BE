@@ -23,9 +23,11 @@ const fileFilter = (req, file, cb) => {
     file.mimetype === 'video/avi' ||
     file.mimetype === 'video/mkv' ||
     file.mimetype === 'video/x-flv' ||
+    file.mimetype === 'video/flv' ||
+    file.mimetype === 'video/quicktime' ||
     file.mimetype === 'video/mov'
   ) {
-    cb(null, true);
+    cb(null, true)
   } else {
     cb(
       new Error(
@@ -34,7 +36,7 @@ const fileFilter = (req, file, cb) => {
           '. Expected an image file: .gif, .mp4, .ogg, .wmv, .webm, .avi, .mkv, .x-flv, .mov'
       ),
       false
-    );
+    )
   }
 };
 
