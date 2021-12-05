@@ -17,7 +17,8 @@ Router.post(
       .notEmpty()
       .withMessage('Email is required.')
       .isEmail()
-      .withMessage('Invalid email!'),
+      .withMessage('Invalid email!')
+      .normalizeEmail({ gmail_remove_dots: false }),
 
     body('password').notEmpty().withMessage('Password is required.'),
   ],
@@ -39,7 +40,7 @@ Router.post(
       .isEmail()
       .withMessage('Invalid email!')
       .custom((value, { req }) => {
-        return User.findOne({ email: value }).then((userDoc) => {
+        return User.findOne({ email: value }).then(userDoc => {
           if (userDoc) {
             return Promise.reject(
               `An account with email "${value}" is already exists`
@@ -60,7 +61,7 @@ Router.post(
     body('lastName', 'Last name is required').trim().notEmpty(),
 
     body('dateOfBirth')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .toDate()
       .isISO8601()
       .withMessage('Invalid type. Date of birth must be a Date')
@@ -68,7 +69,7 @@ Router.post(
       .withMessage('Invalid date of birth. It must before today'),
 
     body('address')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isObject()
       .withMessage('Invalid type. Address must be an Object'),
 
