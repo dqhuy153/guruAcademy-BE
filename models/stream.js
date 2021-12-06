@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const streamSchema = new Schema(
   {
@@ -19,8 +19,13 @@ const streamSchema = new Schema(
       default: 0,
       min: 0,
     },
+    status: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
   },
   { timestamps: true }
-);
+)
 
-module.exports = mongoose.model('Stream', streamSchema);
+module.exports = mongoose.model('Stream', streamSchema)
