@@ -311,6 +311,10 @@ exports.getCourse = async (req, res, next) => {
       {
         path: 'learnersDetail',
         select: '-courseId',
+        populate: {
+          path: 'userId',
+          select: ['firstName', 'lastName', 'email', 'phoneNumber'],
+        },
       },
       {
         path: 'chapters',
