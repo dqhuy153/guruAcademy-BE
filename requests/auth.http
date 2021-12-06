@@ -23,5 +23,4 @@ content-type: application/json
         "country": "vietanm"
     },
     "role": 1
-    
 }

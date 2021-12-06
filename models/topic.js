@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const slug = require('mongoose-slug-updater');
+const mongoose = require('mongoose')
+const slug = require('mongoose-slug-updater')
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
-mongoose.plugin(slug);
+mongoose.plugin(slug)
 
 const topicSchema = new Schema({
   title: {
@@ -39,6 +39,6 @@ const topicSchema = new Schema({
     max: 100,
     default: 0,
   },
-});
+})
 
-module.exports = mongoose.model('Topic', topicSchema);
+module.exports = mongoose.model('Topic', topicSchema)

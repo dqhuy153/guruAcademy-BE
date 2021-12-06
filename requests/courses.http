@@ -25,7 +25,7 @@ GET http://localhost:5000/api/v1/courses/topics/python?count=20
 //Function: get course detail
 //Auth: public
 ###
-GET http://localhost:5000/api/v1/courses/617628e7a710327b33ddb813?sort=date
+GET http://localhost:5000/api/v1/courses/6160522b0be2f6e199cf231e?sort=date
 
 //*** GET: api/v1/courses/:courseSlugOrId/chapters
 //get main content of course, only learner who registered can access, use case: for learning room.
