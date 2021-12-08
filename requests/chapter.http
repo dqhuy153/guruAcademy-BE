@@ -2,7 +2,7 @@
 //get chapter detail
 //teacher, learners of this course, admin, root
 ###
-GET http://localhost:5000/api/v1/chapters/6198c31c3738020f67466a69
+GET http://localhost:5000/api/v1/chapters/61afa0a0d6b26f46b6b1cfda
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzg5NzM2NzcsImV4cCI6MTYzODk4ODA3N30.qBSfC7K1XmDFKjXViPaC3FxvWx8aOm-9kwM7i3EINL0
 
 //POST: /api/v1/chapters

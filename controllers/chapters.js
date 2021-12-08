@@ -34,7 +34,7 @@ exports.getChapter = async (req, res, next) => {
             select: '-lesson',
           },
           {
-            path: 'test',
+            path: 'tests',
             select: '-lesson',
           },
           {

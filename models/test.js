@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const slug = require('mongoose-slug-updater');
+const mongoose = require('mongoose')
+const slug = require('mongoose-slug-updater')
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
-mongoose.plugin(slug);
+mongoose.plugin(slug)
 
 const testSchema = new Schema({
   number: {
@@ -66,6 +66,6 @@ const testSchema = new Schema({
     ref: 'Lesson',
     required: true,
   },
-});
+})
 
-module.exports = mongoose.model('Test', testSchema);
+module.exports = mongoose.model('Test', testSchema)
