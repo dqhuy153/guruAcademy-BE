@@ -874,6 +874,7 @@ exports.postNewCourse = async (req, res, next) => {
   const discount = req.body.discount
   const categoryId = req.body.categoryId
   const topicId = req.body.topicId
+  const url = req.body.url
 
   const imageFile = req.file
 
@@ -948,7 +949,11 @@ exports.postNewCourse = async (req, res, next) => {
     const course = new Course({
       title,
       description,
-      imageUrl: uploadS3Result ? `/files/${uploadS3Result.Key}` : null,
+      imageUrl: uploadS3Result
+        ? `/files/${uploadS3Result.Key}`
+        : url
+        ? url
+        : null,
       author: req.userId,
       topic: topicId,
       tags,

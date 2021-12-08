@@ -1,28 +1,28 @@
-const express = require('express');
-const { body, param } = require('express-validator');
-const mongoose = require('mongoose');
+const express = require('express')
+const { body, param } = require('express-validator')
+const mongoose = require('mongoose')
 
-const topicsController = require('../controllers/topics');
-const isAuth = require('../middleware/isAuth');
-const Topic = require('../models/topic');
+const topicsController = require('../controllers/topics')
+const isAuth = require('../middleware/isAuth')
+const Topic = require('../models/topic')
 
-const Router = express.Router();
+const Router = express.Router()
 
 //TOPICs
 //GET all topics
 //public
-Router.get('/topics', topicsController.getTopics);
+Router.get('/topics', topicsController.getTopics)
 
 //GET category's topics
 //public
 Router.get(
   '/course-categories/:categorySlugOrId/topics',
   topicsController.getCategoryTopics
-);
+)
 
 //GET topic
 //public
-Router.get('/topics/:topicSlugOrId', topicsController.getTopic);
+Router.get('/topics/:topicSlugOrId', topicsController.getTopic)
 
 //POST: /api/v1/course-categories/:categorySlugOrId/topics
 //admin required
@@ -35,25 +35,25 @@ Router.post(
       .notEmpty()
       .withMessage("Topic's title is required.")
       .trim()
-      .custom((value) => {
+      .custom(value => {
         return Topic.findOne({ title: value })
           .collation({ locale: 'en', strength: 2 })
-          .then((topicDoc) => {
+          .then(topicDoc => {
             if (topicDoc) {
-              return Promise.reject(`Topic "${value}" is already exists`);
+              return Promise.reject(`Topic "${value}" is already exists`)
             }
-          });
+          })
       }),
 
     body('discountPercent')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isNumeric()
       .withMessage('Invalid type. Expected a number')
       .isInt({ min: 0, max: 100 })
       .withMessage('Invalid value. (0 <= discount percent <= 100)'),
   ],
   topicsController.postNewTopic
-);
+)
 
 //PUT: /api/v1/topics/:id
 //admin required
@@ -72,7 +72,7 @@ Router.put(
       .withMessage("Topic's title is required.")
       .trim()
       .custom((value, { req }) => {
-        const topicId = new mongoose.Types.ObjectId(req.params.id);
+        const topicId = new mongoose.Types.ObjectId(req.params.id)
 
         return Topic.findOne({
           title: value,
@@ -81,15 +81,15 @@ Router.put(
           },
         })
           .collation({ locale: 'en', strength: 2 })
-          .then((topicDoc) => {
+          .then(topicDoc => {
             if (topicDoc) {
-              return Promise.reject(`Topic "${value}" is already exists`);
+              return Promise.reject(`Topic "${value}" is already exists`)
             }
-          });
+          })
       }),
 
     body('discountPercent')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isNumeric()
       .withMessage('Invalid type. Expected a number')
       .isInt({ min: 0, max: 100 })
@@ -114,15 +114,15 @@ Router.put(
             $ne: new mongoose.Types.ObjectId(req.params.id),
           },
           slug: value,
-        }).then((topicDoc) => {
+        }).then(topicDoc => {
           if (topicDoc) {
-            return Promise.reject(`Slug "${value}" is exists!`);
+            return Promise.reject(`Slug "${value}" is exists!`)
           }
-        });
+        })
       }),
   ],
   topicsController.updateTopic
-);
+)
 
 //DELETE: /api/v1/topics/:id
 //admin required
@@ -137,6 +137,6 @@ Router.delete(
       .withMessage('Invalid type. Expected an ObjectId.'),
   ],
   topicsController.deleteTopic
-);
+)
 
-module.exports = Router;
+module.exports = Router

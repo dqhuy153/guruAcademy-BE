@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const slug = require('mongoose-slug-updater');
+const mongoose = require('mongoose')
+const slug = require('mongoose-slug-updater')
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
-mongoose.plugin(slug);
+mongoose.plugin(slug)
 
 const lessonSchema = new Schema(
   {
@@ -39,13 +39,13 @@ const lessonSchema = new Schema(
       ref: 'Chapter',
       required: true,
     },
-    attachments: [],
-    tests: [],
-    comments: [],
+    attachments: [{ type: Schema.Types.ObjectId, ref: 'Attachment' }],
+    tests: [{ type: Schema.Types.ObjectId, ref: 'Test' }],
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   },
   {
     timestamps: true,
   }
-);
+)
 
-module.exports = mongoose.model('Lesson', lessonSchema);
+module.exports = mongoose.model('Lesson', lessonSchema)

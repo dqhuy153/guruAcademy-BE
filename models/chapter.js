@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const slug = require('mongoose-slug-updater');
+const mongoose = require('mongoose')
+const slug = require('mongoose-slug-updater')
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
-mongoose.plugin(slug);
+mongoose.plugin(slug)
 
 const chapterSchema = new Schema(
   {
@@ -35,11 +35,11 @@ const chapterSchema = new Schema(
       required: true,
       default: 1,
     },
-    lessons: [],
+    lessons: [{ type: Schema.Types.ObjectId, ref: 'Lesson' }],
   },
   {
     timestamps: true,
   }
-);
+)
 
-module.exports = mongoose.model('Chapter', chapterSchema);
+module.exports = mongoose.model('Chapter', chapterSchema)
