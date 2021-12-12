@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { body, param } = require('express-validator');
+const mongoose = require('mongoose')
 
 const isAuth = require('../middleware/isAuth');
 const lessonsController = require('../controllers/lessons');
@@ -72,6 +73,8 @@ Router.post(
     body('number').optional(),
 
     body('description').optional(),
+    
+    body('url').optional()
   ],
   lessonsController.createLesson
 );
@@ -104,6 +107,8 @@ Router.put(
       .withMessage('Invalid type. Expected an Number.')
       .isInt({ max: 1, min: 0 })
       .withMessage('Status only excepts value: 0 & 1'),
+    
+    body('url').optional(),
 
     body('slug')
       .if((value) => value !== undefined)
