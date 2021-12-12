@@ -324,6 +324,13 @@ exports.getCourse = async (req, res, next) => {
           '-videos.url',
           '-attachments.url',
         ],
+        populate: {
+          path: 'lessons',
+          select: [
+            '-url',
+            '-chapter'
+          ]
+        },
         options: { sort: sort },
       },
       {
