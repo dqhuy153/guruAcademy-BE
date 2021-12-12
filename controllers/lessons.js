@@ -79,7 +79,7 @@ exports.createLesson = async (req, res, next) => {
   const error = validationError(req)
   if (error) return next(error)
 
-  const { title, description, chapterId, number } = req.body
+  const { title, description, chapterId, number, url } = req.body
   const videoFile = req.file
 
   try {
@@ -107,7 +107,7 @@ exports.createLesson = async (req, res, next) => {
       number,
       description,
       chapter: chapterId,
-      url: uploadS3Result ? `/files/${uploadS3Result.Key}` : '404',
+      url: uploadS3Result ? `/files/${uploadS3Result.Key}` : url ? url : '',
     })
 
     await lesson.save()
@@ -138,7 +138,7 @@ exports.updateLesson = async (req, res, next) => {
   if (error) return next(error)
 
   const lessonId = req.params.id
-  const { title, description, status, number, attachments, slug, tests } =
+  const { title, description, status, number, attachments, slug, tests, url } =
     req.body
   const videoFile = req.file
 
@@ -173,6 +173,7 @@ exports.updateLesson = async (req, res, next) => {
     if (number !== undefined) lesson.number = number
     if (attachments !== undefined) lesson.attachments = attachments
     if (tests !== undefined) lesson.tests = tests
+    if (url) lesson.url = url
     if (uploadS3Result) lesson.url = `/files/${uploadS3Result.Key}`
 
     await lesson.save()
