@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const { body, query, param } = require('express-validator');
 const multer = require('multer');

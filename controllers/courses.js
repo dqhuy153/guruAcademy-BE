@@ -324,6 +324,13 @@ exports.getCourse = async (req, res, next) => {
           '-videos.url',
           '-attachments.url',
         ],
+        populate: {
+          path: 'lessons',
+          select: [
+            '-url',
+            '-chapter'
+          ]
+        },
         options: { sort: sort },
       },
       {
@@ -1057,7 +1064,7 @@ exports.updateCourse = async (req, res, next) => {
     }
 
     //check course's authorization
-    if (course.author.toString() !== req.userId.toString()) {
+    if (user.role.id !== 1 && user.role.id !== 0 && course.author.toString() !== req.userId.toString()) {
       const error = new Error(
         'You do not have permission to do this action! This course is not your.'
       )
@@ -1218,7 +1225,7 @@ exports.deleteCourse = async (req, res, next) => {
     }
 
     //check course's authorization
-    if (userRole === 3 && course.author.toString() !== req.userId.toString()) {
+    if (userRole === 3  && user.role.id !== 1 && user.role.id !== 0 && course.author.toString() !== req.userId.toString()) {
       const error = new Error(
         'You do not have permission to do this action! This course is not your.'
       )
