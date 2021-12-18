@@ -326,10 +326,7 @@ exports.getCourse = async (req, res, next) => {
         ],
         populate: {
           path: 'lessons',
-          select: [
-            '-url',
-            '-chapter'
-          ]
+          select: ['-url', '-chapter'],
         },
         options: { sort: sort },
       },
@@ -881,7 +878,7 @@ exports.postNewCourse = async (req, res, next) => {
   const discount = req.body.discount
   const categoryId = req.body.categoryId
   const topicId = req.body.topicId
-  const url = req.body.url
+  const url = req.body.imageUrl
 
   const imageFile = req.file
 
@@ -1031,6 +1028,7 @@ exports.updateCourse = async (req, res, next) => {
   const price = req.body.price
   const discount = req.body.discount
   const status = req.body.status
+  const url = req.body.imageUrl
 
   const imageFile = req.file
 
@@ -1064,7 +1062,11 @@ exports.updateCourse = async (req, res, next) => {
     }
 
     //check course's authorization
-    if (user.role.id !== 1 && user.role.id !== 0 && course.author.toString() !== req.userId.toString()) {
+    if (
+      user.role.id !== 1 &&
+      user.role.id !== 0 &&
+      course.author.toString() !== req.userId.toString()
+    ) {
       const error = new Error(
         'You do not have permission to do this action! This course is not your.'
       )
@@ -1142,6 +1144,7 @@ exports.updateCourse = async (req, res, next) => {
     if (discount !== undefined) course.discount = discount
     if (slug) course.slug = slug
     if (status !== undefined) course.status = status
+    if (url) course.imageUrl = url
 
     if (uploadS3Result) user.imageUrl = `/files/${uploadS3Result.Key}`
 
@@ -1225,7 +1228,12 @@ exports.deleteCourse = async (req, res, next) => {
     }
 
     //check course's authorization
-    if (userRole === 3  && user.role.id !== 1 && user.role.id !== 0 && course.author.toString() !== req.userId.toString()) {
+    if (
+      userRole === 3 &&
+      user.role.id !== 1 &&
+      user.role.id !== 0 &&
+      course.author.toString() !== req.userId.toString()
+    ) {
       const error = new Error(
         'You do not have permission to do this action! This course is not your.'
       )

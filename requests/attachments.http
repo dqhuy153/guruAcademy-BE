@@ -1,20 +1,5 @@
-
-
 //Delete attachment
 ###
-POST http://localhost:5000/api/v1/auth/signup
+DELETE http://localhost:5000/api/v1/attachments/61b621c30d3d0d081b434daa
 content-type: application/json
-
-{
-    "email": "duonglam2@gmail.com",
-    "password": "123456",
-    "firstName": "Huy",
-    "lastName": "Dang Quang",
-    "dateOfBirth": "1/1/1999",
-    "address": {
-        "street": "Bach Dang",
-        "city": "da nang",
-        "country": "vietanm"
-    },
-    "role": 1
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk3OTg5NDYsImV4cCI6MTYzOTgxMzM0Nn0.1PKDsc3Gz05Evmnv_6jhmahh95fgDrzyvmVkQxy0P1g
