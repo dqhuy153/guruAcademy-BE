@@ -181,7 +181,7 @@ exports.deleteAttachment = async (req, res, next) => {
       throw error
     }
 
-    if (!lesson.chapter.courseId) {
+    if (!attachment.lesson.chapter.courseId) {
       const error = new Error('Course not found!')
       error.statusCode = 404
       throw error
