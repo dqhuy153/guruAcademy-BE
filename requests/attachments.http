@@ -1,5 +1,5 @@
 //Delete attachment
 ###
-DELETE http://localhost:5000/api/v1/attachments/61b621c30d3d0d081b434daa
+DELETE http://localhost:5000/api/v1/attachments/61bd5c0b718c42379da65db7
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk3OTg5NDYsImV4cCI6MTYzOTgxMzM0Nn0.1PKDsc3Gz05Evmnv_6jhmahh95fgDrzyvmVkQxy0P1g

@@ -1,16 +1,16 @@
-const express = require('express');
-const multer = require('multer');
-const { body, param } = require('express-validator');
+const express = require('express')
+const multer = require('multer')
+const { body, param } = require('express-validator')
 const mongoose = require('mongoose')
 
-const isAuth = require('../middleware/isAuth');
-const lessonsController = require('../controllers/lessons');
-const { isRootOrAdminOrTeacher } = require('../middleware/authRole');
-const Attachment = require('../models/attachment');
-const Test = require('../models/test');
-const Lesson = require('../models/lesson');
+const isAuth = require('../middleware/isAuth')
+const lessonsController = require('../controllers/lessons')
+const { isRootOrAdminOrTeacher } = require('../middleware/authRole')
+const Attachment = require('../models/attachment')
+const Test = require('../models/test')
+const Lesson = require('../models/lesson')
 
-const Router = express.Router();
+const Router = express.Router()
 
 //setup multer for receive files
 //filter image only
@@ -39,20 +39,20 @@ const fileFilter = (req, file, cb) => {
       false
     )
   }
-};
+}
 
 const storage = multer.diskStorage({
   destination: './upload/',
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + file.originalname);
+    cb(null, new Date().toISOString() + file.originalname)
   },
-});
+})
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage, fileFilter })
 
 //GET: /api/v1/lessons/:lessonSlugOrId
 //Admin, root, teacher author, learner who buy course
-Router.get('/lessons/:lessonSlugOrId', isAuth, lessonsController.getLesson);
+Router.get('/lessons/:lessonSlugOrId', isAuth, lessonsController.getLesson)
 
 //POST: /api/v1/lessons
 //teacher required
@@ -73,11 +73,11 @@ Router.post(
     body('number').optional(),
 
     body('description').optional(),
-    
-    body('url').optional()
+
+    body('url').optional(),
   ],
   lessonsController.createLesson
-);
+)
 
 //PUT: /api/v1/lessons/:id
 //teacher required
@@ -93,25 +93,28 @@ Router.put(
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId.'),
 
-    body('title', "Lesson's title is required.").notEmpty(),
+    body('title')
+      .if(value => value !== undefined)
+      .notEmpty()
+      .withMessage('Title is required.'),
 
     body('number').optional(),
 
     body('description').optional(),
 
     body('status')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Status is required.')
       .isNumeric()
       .withMessage('Invalid type. Expected an Number.')
       .isInt({ max: 1, min: 0 })
       .withMessage('Status only excepts value: 0 & 1'),
-    
+
     body('url').optional(),
 
     body('slug')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Slug is required.')
       .matches('^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$')
@@ -122,15 +125,15 @@ Router.put(
             $ne: new mongoose.Types.ObjectId(req.params.id),
           },
           slug: value,
-        }).then((lessonDoc) => {
+        }).then(lessonDoc => {
           if (lessonDoc) {
-            return Promise.reject(`Slug "${value}" is exists!`);
+            return Promise.reject(`Slug "${value}" is exists!`)
           }
-        });
+        })
       }),
 
     body('attachments')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Attachments of lessons is required.')
       .isArray()
@@ -146,19 +149,19 @@ Router.put(
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId.')
       .custom((value, { req }) => {
-        return Attachment.findById(value).then((attachmentDoc) => {
+        return Attachment.findById(value).then(attachmentDoc => {
           if (!attachmentDoc) {
-            return Promise.reject(`Attachment ${value} is not exists!`);
+            return Promise.reject(`Attachment ${value} is not exists!`)
           }
 
           if (attachmentDoc.lesson.toString() !== req.params.id) {
-            return Promise.reject(`Attachment ${value} is not in this lesson!`);
+            return Promise.reject(`Attachment ${value} is not in this lesson!`)
           }
-        });
+        })
       }),
 
     body('tests')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Tests of lessons is required.')
       .isArray()
@@ -174,19 +177,19 @@ Router.put(
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId.')
       .custom((value, { req }) => {
-        return Test.findById(value).then((testDoc) => {
+        return Test.findById(value).then(testDoc => {
           if (!testDoc) {
-            return Promise.reject(`Test ${value} is not exists!`);
+            return Promise.reject(`Test ${value} is not exists!`)
           }
 
           if (testDoc.lesson.toString() !== req.params.id) {
-            return Promise.reject(`Test ${value} is not in this lesson!`);
+            return Promise.reject(`Test ${value} is not in this lesson!`)
           }
-        });
+        })
       }),
   ],
   lessonsController.updateLesson
-);
+)
 
 //DELETE: /api/v1/lessons/:id
 //teacher require
@@ -202,6 +205,6 @@ Router.delete(
       .withMessage('Invalid type. Expected an ObjectId.'),
   ],
   lessonsController.deleteLesson
-);
+)
 
-module.exports = Router;
+module.exports = Router
