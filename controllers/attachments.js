@@ -169,6 +169,24 @@ exports.deleteAttachment = async (req, res, next) => {
 
     const lesson = await lessonService.findLessonByIdAsync(attachment.lesson)
 
+    if (!lesson) {
+      const error = new Error('Lesson not found!')
+      error.statusCode = 404
+      throw error
+    }
+
+    if (!lesson.chapter) {
+      const error = new Error('Chapter not found!')
+      error.statusCode = 404
+      throw error
+    }
+
+    if (!lesson.chapter.courseId) {
+      const error = new Error('Course not found!')
+      error.statusCode = 404
+      throw error
+    }
+
     //check course's authorization
     await courseService.checkCourseWriteableAsync(
       attachment.lesson.chapter.courseId.toString(),
@@ -176,14 +194,14 @@ exports.deleteAttachment = async (req, res, next) => {
     )
 
     //delete attachment
-    await attachment.findByIdAndDelete(attachmentId)
+    await Attachment.findByIdAndDelete(attachmentId)
 
     //remove attachment from lesson
     lesson.attachments.pull(attachment._id)
     await lesson.save()
 
     res.status(200).json({
-      message: 'Test deleted successfully',
+      message: 'Attachment deleted successfully',
       success: true,
     })
   } catch (error) {

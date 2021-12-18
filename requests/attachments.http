@@ -1,0 +1,20 @@
+
+
+//Delete attachment
+###
+POST http://localhost:5000/api/v1/auth/signup
+content-type: application/json
+
+{
+    "email": "duonglam2@gmail.com",
+    "password": "123456",
+    "firstName": "Huy",
+    "lastName": "Dang Quang",
+    "dateOfBirth": "1/1/1999",
+    "address": {
+        "street": "Bach Dang",
+        "city": "da nang",
+        "country": "vietanm"
+    },
+    "role": 1
+}
