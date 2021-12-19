@@ -9,23 +9,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZ
 ###
 POST http://localhost:5000/api/v1/lessons
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0OTY5NzIsImV4cCI6MTYzNzU4MzM3Mn0.TcH-vKKwgzkPeF13Q2RHTbfHVQH6dZd4hBh4T8WYUOE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk4MzE5MzgsImV4cCI6MTYzOTg0NjMzOH0.GWhZbeHayxGtVWeKFDjVkS8r1IcT4QXJMo6tXWfhKWU
 
 {
-  "title": "Lesson 5", 
-  "description": "Introduce 3", 
-  "chapterId": "6198c31c3738020f67466a69"
+  "title": "Why this course?", 
+  "description": "Why this course is important?", 
+  "chapterId": "61bd5bf3718c42379da65d9d",
+  "url":"https://i.vimeocdn.com/video/1260168573-3e0824e5e185677f821d73e506ccb839285755d85009d8cad?mw=2200&mh=1238&q=70"
 }
 
 //PUT: /api/v1/lessons/:id
 //teacher required
 ###
-PUT http://localhost:5000/api/v1/lessons/61b61640f7b4f47d2f9a13b2
+PUT http://localhost:5000/api/v1/lessons/61bd5bf8718c42379da65da9
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk4MDE1NTMsImV4cCI6MTYzOTgxNTk1M30.PCcfNMBh07uyjxeJ14bFclE47VVVM8Bn-3AnqACtAtQ
 
 {
-  "description": "Introduce 34213"
+  "description": "Huy test"
 }
 
 //DELETE: /api/v1/lessons/:id

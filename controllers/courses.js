@@ -369,6 +369,133 @@ exports.getCourse = async (req, res, next) => {
   }
 }
 
+//authenticated
+//get course for author, root, admin
+exports.getCourseForAuth = async (req, res, next) => {
+  const courseSlugOrId = req.params.courseSlugOrId
+  const sortQuery = req.query.sort //?sort=num
+  let sort
+
+  if (sortQuery === 'num') {
+    sort = { number: 1 }
+  }
+
+  if (sortQuery === 'date') {
+    sort = { createdAt: 1 }
+  }
+
+  try {
+    const user = await User.findById(req.userId)
+
+    //get course
+    let courseFilterData
+    if (mongoose.isValidObjectId(courseSlugOrId)) {
+      const courseId = new mongoose.Types.ObjectId(courseSlugOrId)
+      courseFilterData = { _id: courseId }
+    } else {
+      courseFilterData = { slug: courseSlugOrId }
+    }
+
+    //check course exists
+    const checkedCourse = await Course.findOne(courseFilterData)
+
+    if (!checkedCourse) {
+      const error = new Error('Course not found!')
+      error.statusCode = 404
+
+      throw error
+    }
+
+    //check auth who can see this main content course
+    let isAuthOfCourse = true
+
+    const courseDetail = await CourseDetail.findOne({
+      userId: req.userId,
+      courseId: checkedCourse._id,
+    })
+
+    if (
+      !courseDetail && //learners check
+      user.role.id !== 1 && //admin
+      user.role.id !== 0 && //ROOT
+      user._id.toString() !== checkedCourse.author._id.toString() //teacher
+    ) {
+      isAuthOfCourse = false
+    }
+
+    const course = await Course.findOne(courseFilterData).populate([
+      {
+        path: 'author',
+        select: [
+          'email',
+          'firstName',
+          'lastName',
+          'description',
+          'socialLinks',
+        ],
+      },
+      {
+        path: 'topic',
+        select: '-courses',
+        populate: {
+          path: 'courseCategoryId',
+          select: '-topics',
+        },
+      },
+      {
+        path: 'learnersDetail',
+        select: '-courseId',
+        populate: {
+          path: 'userId',
+          select: ['firstName', 'lastName', 'email', 'phoneNumber'],
+        },
+      },
+      {
+        path: 'chapters',
+        select: [
+          '-courseId',
+          '-tests.questions',
+          '-videos.url',
+          '-attachments.url',
+        ],
+        populate: {
+          path: 'lessons',
+          select: isAuthOfCourse ? ['-chapter'] : ['-url', '-chapter'],
+        },
+        options: { sort: sort },
+      },
+      {
+        path: 'streams',
+        select: ['-courseId'],
+      },
+      {
+        path: 'feedbacks',
+        select: ['-courseId'],
+        populate: {
+          path: 'userId',
+          select: ['firstName', 'lastName', 'email', 'phoneNumber'],
+        },
+      },
+    ])
+
+    //send res
+    res.status(200).json({
+      message: 'Fetch course successfully',
+      data: {
+        course,
+        isAuthOfCourse,
+      },
+      success: true,
+    })
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500
+    }
+
+    next(error)
+  }
+}
+
 //authorization: learnerDetails, teacher, admin, root
 exports.getCourseChapters = async (req, res, next) => {
   const courseSlugOrId = req.params.courseSlugOrId
@@ -441,7 +568,7 @@ exports.getCourseChapters = async (req, res, next) => {
 
     //check auth who can see this main content course
     const courseDetail = await CourseDetail.findOne({
-      userId: user.id,
+      userId: req.userId,
       courseId: course._id,
     })
 
@@ -690,7 +817,7 @@ exports.getCourseStreams = async (req, res, next) => {
 
     //check auth who can see this main content course
     const courseDetail = await CourseDetail.findOne({
-      userId: user.id,
+      userId: req.userId,
       courseId: course._id,
     })
 

@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
-const express = require('express');
-const { body, query, param } = require('express-validator');
-const multer = require('multer');
+const mongoose = require('mongoose')
+const express = require('express')
+const { body, query, param } = require('express-validator')
+const multer = require('multer')
 
-const coursesController = require('../controllers/courses');
-const isAuth = require('../middleware/isAuth');
-const Course = require('../models/course');
+const coursesController = require('../controllers/courses')
+const isAuth = require('../middleware/isAuth')
+const Course = require('../models/course')
 
-const Router = express.Router();
+const Router = express.Router()
 
 //setup multer for receive files
 //filter image only
@@ -18,7 +18,7 @@ const fileFilter = (req, file, cb) => {
     file.mimetype === 'image/jpeg' ||
     file.mimetype === 'image/webp'
   ) {
-    cb(null, true);
+    cb(null, true)
   } else {
     cb(
       new Error(
@@ -27,18 +27,18 @@ const fileFilter = (req, file, cb) => {
           '. Expected an image file: .png, .jpg, .jpeg, .webp'
       ),
       false
-    );
+    )
   }
-};
+}
 
 const storage = multer.diskStorage({
   destination: './upload/',
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + file.originalname);
+    cb(null, new Date().toISOString() + file.originalname)
   },
-});
+})
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage, fileFilter })
 
 //GET: /api/v1/courses/all (query: count, page)
 //get all courses
@@ -47,17 +47,17 @@ Router.get(
   '/courses/all',
   [
     query('page')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isInt({ min: 1 })
       .withMessage('Invalid value! Expected a Number > 0'),
 
     query('count')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isInt({ min: 1 })
       .withMessage('Invalid value! Expected a Number > 0'),
   ],
   coursesController.getAllCourses
-);
+)
 
 // GET: /api/v1/courses/categories/:categorySlugOrId (query: count, page)
 //get courses by category
@@ -66,17 +66,17 @@ Router.get(
   '/courses/categories/:categorySlugOrId',
   [
     query('page')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isInt({ min: 1 })
       .withMessage('Invalid value! Expected a Number > 0'),
 
     query('count')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isInt({ min: 1 })
       .withMessage('Invalid value! Expected a Number > 0'),
   ],
   coursesController.getCoursesByCategory
-);
+)
 
 // GET: /api/v1/courses/topics/:topicSlugOrId (query: count, page)
 //get courses by topic
@@ -85,22 +85,31 @@ Router.get(
   '/courses/topics/:topicSlugOrId',
   [
     query('page')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isInt({ min: 1 })
       .withMessage('Invalid value! Expected a Number > 0'),
 
     query('count')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isInt({ min: 1 })
       .withMessage('Invalid value! Expected a Number > 0'),
   ],
   coursesController.getCoursesByTopic
-);
+)
 
 // GET: /api/v1/courses/:courseSlugOrId
 //get course
 // public
-Router.get('/courses/:courseSlugOrId', coursesController.getCourse);
+Router.get('/courses/:courseSlugOrId', coursesController.getCourse)
+
+// GET: /api/v1/courses/auth/:courseSlugOrId
+//authenticated
+//get course for author, root, admin
+Router.get(
+  '/courses/auth/:courseSlugOrId',
+  isAuth,
+  coursesController.getCourseForAuth
+)
 
 //GET: api/v1/courses/:courseSlugOrId/chapters
 //get main content of course, only learner who registered can access, use case: for learning room.
@@ -109,7 +118,7 @@ Router.get(
   '/courses/:courseSlugOrId/chapters',
   isAuth,
   coursesController.getCourseChapters
-);
+)
 
 //GET: api/v1/courses/:courseSlugOrId/learners
 //get members who registered the course
@@ -118,7 +127,7 @@ Router.get(
   '/courses/:courseSlugOrId/learners',
   isAuth,
   coursesController.getCourseLearners
-);
+)
 
 //GET: api/v1/courses/:courseSlugOrId/feedbacks
 //get courses feedback
@@ -126,7 +135,7 @@ Router.get(
 Router.get(
   '/courses/:courseSlugOrId/feedbacks',
   coursesController.getCourseFeedbacks
-);
+)
 
 //GET: api/v1/courses/:courseSlugOrId/streams
 //get streams of course, only learner who registered can access, use case: for learning room.
@@ -135,7 +144,7 @@ Router.get(
   '/courses/:courseSlugOrId/streams',
   isAuth,
   coursesController.getCourseStreams
-);
+)
 
 // ****
 //Get courses of users
@@ -176,14 +185,14 @@ Router.post(
     body('invoiceId').notEmpty().withMessage('Invoice Id is required!'),
 
     body('discount')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Price is required!')
       .isFloat({ min: 0 })
       .withMessage('Invalid type. Expected a number with min = 0'),
   ],
   coursesController.registerCourse
-);
+)
 
 //POST: /api/v1/courses
 //post new course
@@ -210,22 +219,22 @@ Router.post(
       .withMessage('Invalid type. Expected an ObjectId'),
 
     body('tags')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isArray()
       .withMessage('Invalid type. Expected an array'),
 
     body('price')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isFloat({ min: 0 })
       .withMessage('Invalid type. Expected a number with min = 0'),
 
     body('discount')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isFloat({ min: 0 })
       .withMessage('Invalid type. Expected a number with min = 0'),
   ],
   coursesController.postNewCourse
-);
+)
 
 //PUT: /api/v1/courses/:id
 //update course
@@ -243,19 +252,19 @@ Router.put(
       .withMessage('Invalid type. Expected an ObjectId'),
 
     body('title')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Title is required')
       .trim(),
 
     body('description')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Description is required')
       .trim(),
 
     body('slug')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Slug is required.')
       .matches('^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$')
@@ -266,65 +275,65 @@ Router.put(
             $ne: new mongoose.Types.ObjectId(req.params.id),
           },
           slug: value,
-        }).then((courseDoc) => {
+        }).then(courseDoc => {
           if (courseDoc) {
-            return Promise.reject(`Slug "${value}" is exists!`);
+            return Promise.reject(`Slug "${value}" is exists!`)
           }
-        });
+        })
       }),
 
     body('categoryId')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('CategoryId is required')
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId'),
 
     body('topicId')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('TopicId is required')
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId'),
 
     body('tags')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .isArray()
       .withMessage('Invalid type. Expected an array'),
 
     body('price')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Price is required!')
       .isFloat({ min: 0 })
       .withMessage('Invalid type. Expected a number with min = 0'),
 
     body('discount')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Price is required!')
       .isFloat({ min: 0 })
       .withMessage('Invalid type. Expected a number with min = 0'),
 
     body('status')
-      .if((value) => value !== undefined)
+      .if(value => value !== undefined)
       .notEmpty()
       .withMessage('Status is required.')
       .isInt()
       .withMessage('Invalid type. Expected an Number.')
-      .custom((value) => {
-        const acceptableValues = [0, 1, 2, 20];
+      .custom(value => {
+        const acceptableValues = [0, 1, 2, 20]
         if (!acceptableValues.includes(value)) {
           throw new Error(
             `Invalid value. Expected value in ${acceptableValues}`
-          );
+          )
         } else {
-          return true;
+          return true
         }
       }),
   ],
   coursesController.updateCourse
-);
+)
 
 //DELETE: /api/v1/courses/:id
 //delete course
@@ -340,6 +349,6 @@ Router.delete(
       .withMessage('Invalid type. Expected an ObjectId'),
   ],
   coursesController.deleteCourse
-);
+)
 
-module.exports = Router;
+module.exports = Router
