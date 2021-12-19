@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const attachmentSchema = new Schema(
   {
     number: {
       type: Number,
-      required: true,
+      required: false,
     },
     title: {
       type: String,
@@ -34,6 +34,6 @@ const attachmentSchema = new Schema(
   {
     timestamps: true,
   }
-);
+)
 
-module.exports = mongoose.model('Attachment', attachmentSchema);
+module.exports = mongoose.model('Attachment', attachmentSchema)

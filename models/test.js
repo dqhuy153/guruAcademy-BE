@@ -8,7 +8,7 @@ mongoose.plugin(slug)
 const testSchema = new Schema({
   number: {
     type: Number,
-    required: true,
+    required: false,
   },
   title: {
     type: String,
