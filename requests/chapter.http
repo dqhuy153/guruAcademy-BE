@@ -10,11 +10,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
 ###
 POST http://localhost:5000/api/v1/chapters
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE1YzlkY2ZhMDk0NzY1OGU2M2JlMWZiIiwic3RhdHVzIjoyLCJyb2xlIjp7ImlkIjozLCJuYW1lIjoidGVhY2hlciJ9LCJpYXQiOjE2Mzc0ODc4MTksImV4cCI6MTYzNzU3NDIxOX0.EfY4vlePReuh1ssBDRrOLcM3VR92Fr9K5gSfHp0frqA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk4MjMzNTIsImV4cCI6MTYzOTgzNzc1Mn0.iwE50_TtYLimJ1h5wNt_uJr0K61HXFTax_ATOcc0bok
 
 {
-  "courseId": "617628e7a710327b33ddb813",
-  "title": "Practice",
+  "courseId": "61bd5bee718c42379da65d90",
+  "title": "Practice 2",
   "description": "SCSS vs CSS"
 }
 

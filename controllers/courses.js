@@ -461,6 +461,33 @@ exports.getCourseForAuth = async (req, res, next) => {
         populate: {
           path: 'lessons',
           select: isAuthOfCourse ? ['-chapter'] : ['-url', '-chapter'],
+          populate: [
+            {
+              path: 'attachments',
+              select: isAuthOfCourse ? ['-lesson'] : ['title'],
+            },
+            {
+              path: 'tests',
+              select: isAuthOfCourse ? ['-lesson'] : ['title'],
+            },
+            {
+              path: 'comments',
+              select: isAuthOfCourse ? ['-lesson'] : ['_id'],
+              populate: isAuthOfCourse
+                ? {
+                    path: 'user',
+                    select: [
+                      'firstName',
+                      'lastName',
+                      'email',
+                      'phoneNumber',
+                      'imageUrl',
+                      'role',
+                    ],
+                  }
+                : null,
+            },
+          ],
         },
         options: { sort: sort },
       },

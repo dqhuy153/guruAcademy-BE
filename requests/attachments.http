@@ -4,10 +4,10 @@ content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk5MjMxOTMsImV4cCI6MTYzOTkzNzU5M30.tnzA-LYESe2Qe5L9W_5Y6VeJNbjrGhg_3BP7IfTM26M
 
 {
-    "title": "Homework 1",
+    "title": "Homework 2",
     "description": "This is the first homework",
     "lessonId": "61bddd4a781ae14c821bd30e",
-    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "url": "https://www.youtube.com/watch?v=dQw4w9rewWgXcQ"
 
 }
 

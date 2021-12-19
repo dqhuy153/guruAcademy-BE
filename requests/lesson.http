@@ -9,24 +9,25 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZ
 ###
 POST http://localhost:5000/api/v1/lessons
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk4MzE5MzgsImV4cCI6MTYzOTg0NjMzOH0.GWhZbeHayxGtVWeKFDjVkS8r1IcT4QXJMo6tXWfhKWU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk5MjIzMTIsImV4cCI6MTYzOTkzNjcxMn0.J_SrRlf9YtyxAjahNLPbUe7zQX_DRmH8x7yIlLSGlLk
 
 {
   "title": "Why this course?", 
   "description": "Why this course is important?", 
-  "chapterId": "61bd5bf3718c42379da65d9d",
+  "chapterId": "61bdb98d781ae14c821bd2f7",
   "url":"https://i.vimeocdn.com/video/1260168573-3e0824e5e185677f821d73e506ccb839285755d85009d8cad?mw=2200&mh=1238&q=70"
 }
 
 //PUT: /api/v1/lessons/:id
 //teacher required
 ###
-PUT http://localhost:5000/api/v1/lessons/61bd5bf8718c42379da65da9
+PUT http://localhost:5000/api/v1/lessons/61bf3aab90f2681ee2370016
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk4MDE1NTMsImV4cCI6MTYzOTgxNTk1M30.PCcfNMBh07uyjxeJ14bFclE47VVVM8Bn-3AnqACtAtQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDc1YWY4MzAxZjdiYTNlMWM2N2E2YiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MSwibmFtZSI6ImFkbWluIn0sImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2Mzk5MjIzMTIsImV4cCI6MTYzOTkzNjcxMn0.J_SrRlf9YtyxAjahNLPbUe7zQX_DRmH8x7yIlLSGlLk
 
 {
-  "description": "Huy test"
+  "description": "Why this course is important?", 
+  "url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4"
 }
 
 //DELETE: /api/v1/lessons/:id

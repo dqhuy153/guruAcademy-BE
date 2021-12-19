@@ -25,7 +25,14 @@ GET http://localhost:5000/api/v1/courses/topics/python?count=20
 //Function: get course detail
 //Auth: public
 ###
-GET http://localhost:5000/api/v1/courses/6160522b0be2f6e199cf231e?sort=date
+GET http://localhost:5000/api/v1/courses/61bd5bee718c42379da65d90
+
+//get main content of course, only learner who registered can access, use case: for learning room.
+//authorization: learnerDetails, teacher, admin, root
+###
+GET http://localhost:5000/api/v1/courses/auth/61bd5bee718c42379da65d90
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXIxQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYxNDYwNTRjNzJlNGM5Yjc2MDI5NTVmZiIsInN0YXR1cyI6MSwicm9sZSI6eyJpZCI6MywibmFtZSI6InRlYWNoZXIifSwiZmlyc3ROYW1lIjoiWHVhbiBDaGllbiIsImxhc3ROYW1lIjoiRGFuZyIsImlhdCI6MTYzOTkwNDU1NSwiZXhwIjoxNjM5OTE4OTU1fQ.mNUYv3sbNpJKgITXJ59MYWq79uz9M5zHhpFFaisyOdM
+
 
 //*** GET: api/v1/courses/:courseSlugOrId/chapters
 //get main content of course, only learner who registered can access, use case: for learning room.
