@@ -5,6 +5,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
 
 {
     "content": "First comment",
-    "lessonId": "61bddd4a781ae14c821bd30e",
-
+    "lessonId": "61bddd4a781ae14c821bd30e"
 }

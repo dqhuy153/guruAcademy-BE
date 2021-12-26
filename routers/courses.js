@@ -331,6 +331,13 @@ Router.put(
           return true
         }
       }),
+
+    body('chapters')
+      .if(value => value !== undefined)
+      .notEmpty()
+      .withMessage('Chapter Ids is required.')
+      .isArray()
+      .withMessage('Invalid type. Expected an array.'),
   ],
   coursesController.updateCourse
 )

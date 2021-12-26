@@ -1184,6 +1184,8 @@ exports.updateCourse = async (req, res, next) => {
   const status = req.body.status
   const url = req.body.imageUrl
 
+  const chapters = req.body.chapters
+
   const imageFile = req.file
 
   try {
@@ -1299,6 +1301,8 @@ exports.updateCourse = async (req, res, next) => {
     if (slug) course.slug = slug
     if (status !== undefined) course.status = status
     if (url) course.imageUrl = url
+
+    if (chapters !== undefined) course.chapters = chapters
 
     if (uploadS3Result) user.imageUrl = `/files/${uploadS3Result.Key}`
 
