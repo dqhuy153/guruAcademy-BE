@@ -134,8 +134,6 @@ Router.put(
 
     body('attachments')
       .if(value => value !== undefined)
-      .notEmpty()
-      .withMessage('Attachments of lessons is required.')
       .isArray()
       .withMessage('Invalid type. Expected an Array.'),
 
@@ -144,8 +142,6 @@ Router.put(
         (value, { req }) =>
           req.body.attachments !== undefined || req.body.attachments !== []
       )
-      .notEmpty()
-      .withMessage('Type ID of attachment is required.')
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId.')
       .custom((value, { req }) => {
@@ -162,8 +158,6 @@ Router.put(
 
     body('tests')
       .if(value => value !== undefined)
-      .notEmpty()
-      .withMessage('Tests of lessons is required.')
       .isArray()
       .withMessage('Invalid type. Expected an Array.'),
 
@@ -172,8 +166,6 @@ Router.put(
         (value, { req }) =>
           req.body.tests !== undefined || req.body.tests !== []
       )
-      .notEmpty()
-      .withMessage('Type ID of test is required.')
       .isMongoId()
       .withMessage('Invalid type. Expected an ObjectId.')
       .custom((value, { req }) => {
