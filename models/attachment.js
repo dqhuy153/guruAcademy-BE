@@ -25,6 +25,12 @@ const attachmentSchema = new Schema(
       required: true,
       default: 1,
     },
+    slug: {
+      type: String,
+      slug: 'title',
+      unique: true,
+      slugPaddingSize: 3,
+    },
     lesson: {
       type: Schema.Types.ObjectId,
       ref: 'Lesson',
