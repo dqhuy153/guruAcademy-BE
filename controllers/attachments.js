@@ -130,7 +130,6 @@ exports.updateAttachment = async (req, res, next) => {
     if (status !== undefined) attachment.status = status
     if (slug) attachment.slug = slug
     if (number !== undefined) attachment.number = number
-    if (questions !== undefined) attachment.questions = questions
     if (url !== undefined) attachment.url = url
 
     await attachment.save()
