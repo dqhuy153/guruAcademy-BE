@@ -1,6 +1,7 @@
 const Lesson = require('../models/lesson')
 const Test = require('../models/test')
 const { lessonService, chapterService, courseService } = require('../services')
+const { filterLessonBySlugOrId } = require('../services/lessons.service')
 const { uploadFile } = require('../services/s3')
 const { unlinkPath, validationError } = require('../util/helper')
 
@@ -8,7 +9,8 @@ exports.getLesson = async (req, res, next) => {
   const lessonId = req.params.lessonSlugOrId
 
   try {
-    const lesson = await Lesson.findById(lessonId).populate([
+    const chapterFilterData = filterLessonBySlugOrId(lessonId)
+    const lesson = await Lesson.findOne(chapterFilterData).populate([
       {
         path: 'chapter',
         select: ['title', 'description'],

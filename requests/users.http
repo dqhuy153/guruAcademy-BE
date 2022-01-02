@@ -16,7 +16,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZ
 //public
 //get user profile public
 ###
-GET http://localhost:5000/api/v1/users/6146054c72e4c9b7602955ff/profile
+GET http://localhost:5000/api/v1/users/615c9dcfa0947658e63be1fb/profile
 
 //GET: /api/v1/users/teaching-courses
 //authentication require

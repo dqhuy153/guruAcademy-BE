@@ -1,27 +1,38 @@
-const Lesson = require('../models/lesson');
+const mongoose = require('mongoose')
+const Lesson = require('../models/lesson')
 
-const findLessonByIdAsync = async (lessonId) => {
-  const lesson = await Lesson.findById(lessonId);
+const filterLessonBySlugOrId = lessonSlugOrId => {
+  if (mongoose.isValidObjectId(lessonSlugOrId)) {
+    const lessonId = new mongoose.Types.ObjectId(lessonSlugOrId)
+    return { _id: lessonId }
+  }
+
+  return { slug: lessonSlugOrId }
+}
+
+const findLessonByIdAsync = async lessonId => {
+  const lesson = await Lesson.findById(lessonId)
 
   if (!lesson) {
-    const error = new Error('Lesson not found!');
-    error.statusCode = 404;
+    const error = new Error('Lesson not found!')
+    error.statusCode = 404
 
-    throw error;
+    throw error
   }
 
-  return lesson;
-};
+  return lesson
+}
 
-const findLessonByIdAndDeleteAsync = async (lessonId) => {
+const findLessonByIdAndDeleteAsync = async lessonId => {
   try {
-    await Lesson.findByIdAndDelete(lessonId);
+    await Lesson.findByIdAndDelete(lessonId)
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
 module.exports = {
+  filterLessonBySlugOrId,
   findLessonByIdAsync,
   findLessonByIdAndDeleteAsync,
-};
+}

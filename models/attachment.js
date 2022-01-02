@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
+const slug = require('mongoose-slug-updater')
 
 const Schema = mongoose.Schema
+mongoose.plugin(slug)
 
 const attachmentSchema = new Schema(
   {
