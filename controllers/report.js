@@ -238,31 +238,43 @@ exports.dashboard = async (req, res, next) => {
       .slice(0, 10)
 
     //find total number of learners
-    const totalActiveLearner = await User.find({
+    const activeLearners = await User.find({
       'role.id': UserRole.LEARNER.id,
       status: UserStatus.ACTIVE,
-    }).countDocuments()
+    })
+      .select('-password -__v -notifications -learningCourses')
+      .sort('-createdAt')
+    const totalActiveLearners = activeLearners.length
 
-    const totalPendingLearner = await User.find({
+    const pendingLearners = await User.find({
       'role.id': UserRole.LEARNER.id,
       status: UserStatus.PENDING,
-    }).countDocuments()
+    })
+      .select('-password -__v -notifications -learningCourses')
+      .sort('-createdAt')
+    const totalPendingLearners = pendingLearners.length
 
-    const totalInactiveLearner = await User.find({
+    const inactiveLearners = await User.find({
       'role.id': UserRole.LEARNER.id,
       status: UserStatus.INACTIVE,
-    }).countDocuments()
+    })
+      .select('-password -__v -notifications -learningCourses')
+      .sort('-createdAt')
+    const totalInactiveLearners = inactiveLearners.length
 
-    const totalBannedLearner = await User.find({
+    const bannedLearners = await User.find({
       'role.id': UserRole.LEARNER.id,
       status: UserStatus.BANNED,
-    }).countDocuments()
+    })
+      .select('-password -__v -notifications -learningCourses')
+      .sort('-createdAt')
+    const totalBannedLearners = bannedLearners.length
 
     const totalLearners =
-      totalActiveLearner +
-      totalPendingLearner +
-      totalInactiveLearner +
-      totalBannedLearner
+      totalActiveLearners +
+      totalPendingLearners +
+      totalInactiveLearners +
+      totalBannedLearners
 
     //find new learners in last 7 days
     const newLearners7days = await User.find({
@@ -305,36 +317,43 @@ exports.dashboard = async (req, res, next) => {
     }).countDocuments()
 
     //find total number of Teachers
-    const totalActiveTeacher = await User.find({
+    const activeTeachers = await User.find({
       'role.id': UserRole.TEACHER.id,
       status: UserStatus.ACTIVE,
-    }).countDocuments()
+    })
+      .select('-password -__v -notifications -learningCourses')
+      .sort('-createdAt')
+    const totalActiveTeachers = activeTeachers.length
 
-    const totalPendingTeacher = await User.find({
+    const pendingTeachers = await User.find({
       'role.id': UserRole.TEACHER.id,
       status: UserStatus.PENDING,
-    }).countDocuments()
+    })
+      .select('-password -__v -notifications -learningCourses')
+      .sort('-createdAt')
+    const totalPendingTeachers = pendingTeachers.length
 
-    const totalInactiveTeacher = await User.find({
+    const inactiveTeachers = await User.find({
       'role.id': UserRole.TEACHER.id,
       status: UserStatus.INACTIVE,
-    }).countDocuments()
+    })
+      .select('-password -__v -notifications -learningCourses')
+      .sort('-createdAt')
+    const totalInactiveTeachers = inactiveTeachers.length
 
-    const totalBannedTeacher = await User.find({
+    const bannedTeachers = await User.find({
       'role.id': UserRole.TEACHER.id,
       status: UserStatus.BANNED,
-    }).countDocuments()
+    })
+      .select('-password -__v -notifications -learningCourses')
+      .sort('-createdAt')
+    const totalBannedTeachers = bannedTeachers.length
 
     const totalTeachers =
-      totalActiveTeacher +
-      totalPendingTeacher +
-      totalInactiveTeacher +
-      totalBannedTeacher
-
-    //find total number of teachers
-    const totalTeacher = await User.find({
-      'role.id': UserRole.TEACHER.id,
-    }).countDocuments()
+      totalActiveTeachers +
+      totalPendingTeachers +
+      totalInactiveTeachers +
+      totalBannedTeachers
 
     //find new Teachers in last 7 days
     const newTeachers7days = await User.find({
@@ -377,27 +396,39 @@ exports.dashboard = async (req, res, next) => {
     }).countDocuments()
 
     //find total number of courses
-    const totalActiveCourse = await Course.find({
+    const activeCourses = await Course.find({
       status: CourseStatus.ACTIVE,
-    }).countDocuments()
+    })
+      .select('-__v -learnersDetail')
+      .sort('-createdAt')
+    const totalActiveCourses = activeCourses.length
 
-    const totalPendingCourse = await Course.find({
+    const pendingCourses = await Course.find({
       status: CourseStatus.PENDING,
-    }).countDocuments()
+    })
+      .select('-__v -learnersDetail')
+      .sort('-createdAt')
+    const totalPendingCourses = pendingCourses.length
 
-    const totalInactiveCourse = await Course.find({
+    const inactiveCourses = await Course.find({
       status: CourseStatus.INACTIVE,
-    }).countDocuments()
+    })
+      .select('-__v -learnersDetail')
+      .sort('-createdAt')
+    const totalInactiveCourses = inactiveCourses.length
 
-    const totalDraftCourse = await Course.find({
+    const draftCourses = await Course.find({
       status: CourseStatus.DRAFT,
-    }).countDocuments()
+    })
+      .select('-__v -learnersDetail')
+      .sort('-createdAt')
+    const totalDraftCourses = draftCourses.length
 
     const totalCourses =
-      totalActiveCourse +
-      totalPendingCourse +
-      totalInactiveCourse +
-      totalDraftCourse
+      totalActiveCourses +
+      totalPendingCourses +
+      totalInactiveCourses +
+      totalDraftCourses
 
     //find new Courses in last 7 days
     const newCourses7days = await Course.find({
@@ -434,28 +465,13 @@ exports.dashboard = async (req, res, next) => {
       },
     }).countDocuments()
 
-    //find pending teachers
-    const pendingTeachers = await User.find({
-      'role.id': UserRole.TEACHER.id,
-      status: UserStatus.PENDING,
-    })
-      .select('-password -__v -notifications -learningCourses')
-      .sort('-createdAt')
-
-    //find pending courses
-    const pendingCourses = await Course.find({
-      status: CourseStatus.PENDING,
-    })
-      .select('-__v -learnersDetail')
-      .sort('-createdAt')
-
     //find last 5 learners
-    const last5Learners = await User.find({
+    const last10Learners = await User.find({
       'role.id': UserRole.LEARNER.id,
     })
       .select('-password -__v -notifications -teachingCourses')
       .sort('-createdAt')
-      .limit(5)
+      .limit(10)
 
     //find total revenue
     const courseDetails = await CourseDetail.find()
@@ -500,7 +516,20 @@ exports.dashboard = async (req, res, next) => {
     })
 
     //find last 10 learners registered
-    const last5LearnersRegistered = courseDetails.slice(0, 10)
+    const last10LearnersRegistered = courseDetails.slice(0, 10)
+
+    //get learners data
+    const learnersData = await User.find({
+      'role.id': UserRole.LEARNER.id,
+    })
+      .select('-password -__v -notifications -teachingCourses')
+      .sort('-createdAt')
+
+    const teacherData = await User.find({
+      'role.id': UserRole.TEACHER.id,
+    })
+      .select('-password -__v -notifications -learningCourses')
+      .sort('-createdAt')
 
     res.status(200).json({
       message: 'Fetch top teachers successfully!',
@@ -539,27 +568,27 @@ exports.dashboard = async (req, res, next) => {
         },
         total: {
           learners: totalLearners,
-          activeLearners: totalActiveLearner,
-          pendingLearners: totalPendingLearner,
-          inactiveLearners: totalInactiveLearner,
-          bannedLearners: totalBannedLearner,
+          activeLearners: totalActiveLearners,
+          pendingLearners: totalPendingLearners,
+          inactiveLearners: totalInactiveLearners,
+          bannedLearners: totalBannedLearners,
           teachers: totalTeachers,
-          activeTeachers: totalActiveTeacher,
-          pendingTeachers: totalPendingTeacher,
-          inactiveTeachers: totalInactiveTeacher,
-          bannedTeachers: totalBannedTeacher,
+          activeTeachers: totalActiveTeachers,
+          pendingTeachers: totalPendingTeachers,
+          inactiveTeachers: totalInactiveTeachers,
+          bannedTeachers: totalBannedTeachers,
           courses: totalCourses,
-          activeCourses: totalActiveCourse,
-          pendingCourses: totalPendingCourse,
-          inactiveCourses: totalInactiveCourse,
-          draftCourses: totalDraftCourse,
+          activeCourses: totalActiveCourses,
+          pendingCourses: totalPendingCourses,
+          inactiveCourses: totalInactiveCourses,
+          draftCourses: totalDraftCourses,
           revenue: totalRevenue,
         },
         activities: {
-          last5Learners: last5Learners,
+          last10Learners: last10Learners,
           pendingTeachers: pendingTeachers || [],
           pendingCourses: pendingCourses || [],
-          last5LearnersRegistered: last5LearnersRegistered,
+          last10LearnersRegistered: last10LearnersRegistered,
         },
         revenue: {
           total: totalRevenue,
@@ -568,6 +597,20 @@ exports.dashboard = async (req, res, next) => {
           last3months: totalRevenueLast3months,
           last6months: totalRevenueLast6months,
           last1year: totalRevenueLast1year,
+        },
+        data: {
+          activeLearners: activeLearners,
+          activeTeachers: activeTeachers,
+          activeCourses: activeCourses,
+          pendingLearners: pendingLearners,
+          pendingTeachers: pendingTeachers,
+          pendingCourses: pendingCourses,
+          inactiveLearners: inactiveLearners,
+          inactiveTeachers: inactiveTeachers,
+          inactiveCourses: inactiveCourses,
+          bannedLearners: bannedLearners,
+          bannedTeachers: bannedTeachers,
+          draftCourses: draftCourses,
         },
       },
       success: true,
