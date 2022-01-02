@@ -154,37 +154,7 @@ exports.dashboard = async (req, res, next) => {
 
     //find top 10 courses
     //sort by number of learners
-    const top10CoursesByLearners = await Course.aggregate([
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'author',
-          foreignField: '_id',
-          as: 'author',
-        },
-      },
-      {
-        $project: {
-          _id: 1,
-          title: 1,
-          // imageUrl: 1,
-          author: {
-            _id: 1,
-            firstName: 1,
-            lastName: 1,
-            email: 1,
-          },
-          learnersNumber: { $size: '$learnersDetail' },
-        },
-      },
-      {
-        $sort: { learnersNumber: -1 },
-      },
-      {
-        $limit: 10,
-      },
-    ])
-    //by Revenue
+
     const courses = await Course.find()
       .select('-__v -streams -chapters -tags -description')
       .populate([
@@ -209,6 +179,16 @@ exports.dashboard = async (req, res, next) => {
           },
         },
       ])
+    //by Learners
+    const top10CoursesByLearners = courses
+      .map(course => ({
+        ...course._doc,
+        learnersNumber: course.learnersDetail.length,
+      }))
+      .sort((a, b) => b.learnersNumber - a.learnersNumber)
+      .slice(0, 10)
+
+    //by Revenue
     const top10CoursesByRevenue = courses
       .map(course => ({
         ...course._doc,
