@@ -223,7 +223,7 @@ exports.dashboard = async (req, res, next) => {
       'role.id': UserRole.LEARNER.id,
       status: UserStatus.ACTIVE,
     })
-      .select('-password -__v -notifications -learningCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
     const totalActiveLearners = activeLearners.length
 
@@ -231,7 +231,7 @@ exports.dashboard = async (req, res, next) => {
       'role.id': UserRole.LEARNER.id,
       status: UserStatus.PENDING,
     })
-      .select('-password -__v -notifications -learningCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
     const totalPendingLearners = pendingLearners.length
 
@@ -239,7 +239,7 @@ exports.dashboard = async (req, res, next) => {
       'role.id': UserRole.LEARNER.id,
       status: UserStatus.INACTIVE,
     })
-      .select('-password -__v -notifications -learningCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
     const totalInactiveLearners = inactiveLearners.length
 
@@ -247,7 +247,7 @@ exports.dashboard = async (req, res, next) => {
       'role.id': UserRole.LEARNER.id,
       status: UserStatus.BANNED,
     })
-      .select('-password -__v -notifications -learningCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
     const totalBannedLearners = bannedLearners.length
 
@@ -265,11 +265,27 @@ exports.dashboard = async (req, res, next) => {
       },
     }).countDocuments()
 
+    //find new learners in last 14 days
+    const newLearners14days = await User.find({
+      'role.id': UserRole.LEARNER.id,
+      createdAt: {
+        $gte: getLastXDays(14),
+      },
+    }).countDocuments()
+
     //find new learners in last 1 month
     const newLearners1month = await User.find({
       'role.id': UserRole.LEARNER.id,
       createdAt: {
         $gte: getLastXMonths(1),
+      },
+    }).countDocuments()
+
+    //find new learners in last 2 months
+    const newLearners2months = await User.find({
+      'role.id': UserRole.LEARNER.id,
+      createdAt: {
+        $gte: getLastXMonths(2),
       },
     }).countDocuments()
 
@@ -297,12 +313,20 @@ exports.dashboard = async (req, res, next) => {
       },
     }).countDocuments()
 
+    //find new learners in last 2 years
+    const newLearners2years = await User.find({
+      'role.id': UserRole.LEARNER.id,
+      createdAt: {
+        $gte: getLastXYears(2),
+      },
+    }).countDocuments()
+
     //find total number of Teachers
     const activeTeachers = await User.find({
       'role.id': UserRole.TEACHER.id,
       status: UserStatus.ACTIVE,
     })
-      .select('-password -__v -notifications -learningCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
     const totalActiveTeachers = activeTeachers.length
 
@@ -310,7 +334,7 @@ exports.dashboard = async (req, res, next) => {
       'role.id': UserRole.TEACHER.id,
       status: UserStatus.PENDING,
     })
-      .select('-password -__v -notifications -learningCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
     const totalPendingTeachers = pendingTeachers.length
 
@@ -318,7 +342,7 @@ exports.dashboard = async (req, res, next) => {
       'role.id': UserRole.TEACHER.id,
       status: UserStatus.INACTIVE,
     })
-      .select('-password -__v -notifications -learningCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
     const totalInactiveTeachers = inactiveTeachers.length
 
@@ -326,7 +350,7 @@ exports.dashboard = async (req, res, next) => {
       'role.id': UserRole.TEACHER.id,
       status: UserStatus.BANNED,
     })
-      .select('-password -__v -notifications -learningCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
     const totalBannedTeachers = bannedTeachers.length
 
@@ -344,11 +368,27 @@ exports.dashboard = async (req, res, next) => {
       },
     }).countDocuments()
 
+    //find new Teachers in last 14 days
+    const newTeachers14days = await User.find({
+      'role.id': UserRole.TEACHER.id,
+      createdAt: {
+        $gte: getLastXDays(14),
+      },
+    }).countDocuments()
+
     //find new Teachers in last 1 month
     const newTeachers1month = await User.find({
       'role.id': UserRole.TEACHER.id,
       createdAt: {
         $gte: getLastXMonths(1),
+      },
+    }).countDocuments()
+
+    //find new Teachers in last 2 months
+    const newTeachers2months = await User.find({
+      'role.id': UserRole.TEACHER.id,
+      createdAt: {
+        $gte: getLastXMonths(2),
       },
     }).countDocuments()
 
@@ -376,11 +416,27 @@ exports.dashboard = async (req, res, next) => {
       },
     }).countDocuments()
 
+    //find new Teachers in last 2 years
+    const newTeachers2years = await User.find({
+      'role.id': UserRole.TEACHER.id,
+      createdAt: {
+        $gte: getLastXYears(2),
+      },
+    }).countDocuments()
+
     //find total number of courses
     const activeCourses = await Course.find({
       status: CourseStatus.ACTIVE,
     })
       .select('-__v -learnersDetail')
+      .populate({
+        path: 'topic',
+        select: '_id title status',
+        populate: {
+          path: 'courseCategoryId',
+          select: '_id title status',
+        },
+      })
       .sort('-createdAt')
     const totalActiveCourses = activeCourses.length
 
@@ -418,10 +474,24 @@ exports.dashboard = async (req, res, next) => {
       },
     }).countDocuments()
 
+    //find new Courses in last 14 days
+    const newCourses14days = await Course.find({
+      createdAt: {
+        $gte: getLastXDays(14),
+      },
+    }).countDocuments()
+
     //find new Courses in last 1 month
     const newCourses1month = await Course.find({
       createdAt: {
         $gte: getLastXMonths(1),
+      },
+    }).countDocuments()
+
+    //find new Courses in last 2 months
+    const newCourses2months = await Course.find({
+      createdAt: {
+        $gte: getLastXMonths(2),
       },
     }).countDocuments()
 
@@ -446,6 +516,13 @@ exports.dashboard = async (req, res, next) => {
       },
     }).countDocuments()
 
+    //find new Courses in last 2 years
+    const newCourses2years = await Course.find({
+      createdAt: {
+        $gte: getLastXYears(2),
+      },
+    }).countDocuments()
+
     //find last 5 learners
     const last10Learners = await User.find({
       'role.id': UserRole.LEARNER.id,
@@ -462,10 +539,13 @@ exports.dashboard = async (req, res, next) => {
 
     let totalRevenue = 0
     let totalRevenueLast7days = 0
+    let totalRevenueLast14days = 0
     let totalRevenueLast1month = 0
+    let totalRevenueLast2months = 0
     let totalRevenueLast3months = 0
     let totalRevenueLast6months = 0
     let totalRevenueLast1year = 0
+    let totalRevenueLast2years = 0
 
     courseDetails.forEach(courseDetail => {
       const createdDate = courseDetail.createdAt?.getTime()
@@ -475,24 +555,48 @@ exports.dashboard = async (req, res, next) => {
 
       if (createdDate >= getLastXDays(7)) {
         totalRevenueLast7days += paymentPrice
+        totalRevenueLast14days += paymentPrice
         totalRevenueLast1month += paymentPrice
+        totalRevenueLast2months += paymentPrice
         totalRevenueLast3months += paymentPrice
         totalRevenueLast6months += paymentPrice
         totalRevenueLast1year += paymentPrice
+        totalRevenueLast2years += paymentPrice
+      } else if (createdDate >= getLastXDays(14)) {
+        totalRevenueLast14days += paymentPrice
+        totalRevenueLast1month += paymentPrice
+        totalRevenueLast2months += paymentPrice
+        totalRevenueLast3months += paymentPrice
+        totalRevenueLast6months += paymentPrice
+        totalRevenueLast1year += paymentPrice
+        totalRevenueLast2years += paymentPrice
       } else if (createdDate >= getLastXMonths(1)) {
         totalRevenueLast1month += paymentPrice
+        totalRevenueLast2months += paymentPrice
         totalRevenueLast3months += paymentPrice
         totalRevenueLast6months += paymentPrice
         totalRevenueLast1year += paymentPrice
+        totalRevenueLast2years += paymentPrice
+      } else if (createdDate >= getLastXMonths(2)) {
+        totalRevenueLast2months += paymentPrice
+        totalRevenueLast3months += paymentPrice
+        totalRevenueLast6months += paymentPrice
+        totalRevenueLast1year += paymentPrice
+        totalRevenueLast2years += paymentPrice
       } else if (createdDate >= getLastXMonths(3)) {
         totalRevenueLast3months += paymentPrice
         totalRevenueLast6months += paymentPrice
         totalRevenueLast1year += paymentPrice
+        totalRevenueLast2years += paymentPrice
       } else if (createdDate >= getLastXMonths(6)) {
         totalRevenueLast6months += paymentPrice
         totalRevenueLast1year += paymentPrice
+        totalRevenueLast2years += paymentPrice
       } else if (createdDate >= getLastXYears(1)) {
         totalRevenueLast1year += paymentPrice
+        totalRevenueLast2years += paymentPrice
+      } else if (createdDate >= getLastXYears(2)) {
+        totalRevenueLast2years += paymentPrice
       }
     })
 
@@ -503,13 +607,13 @@ exports.dashboard = async (req, res, next) => {
     const learnersData = await User.find({
       'role.id': UserRole.LEARNER.id,
     })
-      .select('-password -__v -notifications -teachingCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
 
     const teacherData = await User.find({
       'role.id': UserRole.TEACHER.id,
     })
-      .select('-password -__v -notifications -learningCourses')
+      .select('-password -__v -notifications')
       .sort('-createdAt')
 
     res.status(200).json({
@@ -528,24 +632,33 @@ exports.dashboard = async (req, res, next) => {
         },
         newLearners: {
           last7days: newLearners7days,
+          last14days: newLearners14days,
           last1month: newLearners1month,
+          last2months: newLearners2months,
           last3months: newLearners3months,
           last6months: newLearners6months,
           last1year: newLearners1year,
+          last2years: newLearners2years,
         },
         newTeachers: {
           last7days: newTeachers7days,
+          last14days: newTeachers14days,
           last1month: newTeachers1month,
+          last2months: newTeachers2months,
           last3months: newTeachers3months,
           last6months: newTeachers6months,
           last1year: newTeachers1year,
+          last2years: newTeachers2years,
         },
         newCourses: {
           last7days: newCourses7days,
+          last14days: newCourses14days,
           last1month: newCourses1month,
+          last2months: newCourses2months,
           last3months: newCourses3months,
           last6months: newCourses6months,
           last1year: newCourses1year,
+          last2years: newCourses2years,
         },
         total: {
           learners: totalLearners,
@@ -574,10 +687,13 @@ exports.dashboard = async (req, res, next) => {
         revenue: {
           total: totalRevenue,
           last7days: totalRevenueLast7days,
+          last14days: totalRevenueLast14days,
           last1month: totalRevenueLast1month,
+          last2months: totalRevenueLast2months,
           last3months: totalRevenueLast3months,
           last6months: totalRevenueLast6months,
           last1year: totalRevenueLast1year,
+          last2years: totalRevenueLast2years,
         },
         data: {
           activeLearners: activeLearners,
@@ -592,6 +708,8 @@ exports.dashboard = async (req, res, next) => {
           bannedLearners: bannedLearners,
           bannedTeachers: bannedTeachers,
           draftCourses: draftCourses,
+          learnersData,
+          teacherData,
         },
       },
       success: true,
