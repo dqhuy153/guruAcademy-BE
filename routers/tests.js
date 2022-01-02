@@ -1,6 +1,5 @@
 const express = require('express')
 const mongoose = require('mongoose')
-
 const { body, param } = require('express-validator')
 
 const testController = require('../controllers/tests')

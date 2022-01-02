@@ -35,6 +35,10 @@ const userSchema = new Schema(
       type: String,
       required: false,
     },
+    cvUrl: {
+      type: String,
+      required: false,
+    },
     phoneNumber: {
       type: String,
       required: false,

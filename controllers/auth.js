@@ -25,6 +25,8 @@ exports.signup = async (req, res, next) => {
 
   const description = req.body.description
   const socialLinks = req.body.socialLinks
+  const imageUrl = req.body.imageUrl
+  const cvUrl = req.body.cvUrl
 
   let roleData
   let status
@@ -62,6 +64,8 @@ exports.signup = async (req, res, next) => {
       role: roleData,
       status,
       phoneNumber,
+      imageUrl,
+      cvUrl,
       description,
       socialLinks,
       learningCourses: [],

@@ -55,10 +55,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
 ###
 POST http://localhost:5000/api/v1/courses/register
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYXJuZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE0YjM2NjZiMTBkYmE0NzNjNzM2NjkyIiwic3RhdHVzIjoxLCJyb2xlIjp7ImlkIjoyLCJuYW1lIjoibGVhcm5lciJ9LCJpYXQiOjE2MzQ5OTM1MzgsImV4cCI6MTYzNTAwMDczOH0.f6wFUnLa6rjGK3PYCX3fLwOouGqq_C1pN-t3EpRMSXA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxlYXJuZXJAZ21haWwuY29tIiwidXNlcklkIjoiNjE0YjM2NjZiMTBkYmE0NzNjNzM2NjkyIiwic3RhdHVzIjoxLCJyb2xlIjp7ImlkIjoyLCJuYW1lIjoibGVhcm5lciJ9LCJmaXJzdE5hbWUiOiJEIiwibGFzdE5hbWUiOiJOZ3V5ZW4iLCJpYXQiOjE2NDEwOTM4MjIsImV4cCI6MTY0MTEwODIyMn0.pzrjBnp2EMEf47jtSM6Mdd3bI0TTOhxBdL_IAZ5A-EA
 
 {
-  "courseId": "61602a2a268d8024f910a122",
+  "courseId": "61bd5bee718c42379da65d90",
   "price": 25.99,
   "brandId": 1,
   "methodId": 1,

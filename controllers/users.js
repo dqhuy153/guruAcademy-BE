@@ -119,12 +119,30 @@ exports.getPublicUserProfile = async (req, res, next) => {
 
   try {
     //check user
-    const user = await User.findById(userId).select([
-      '-password',
-      '-teachingCourses',
-      '-learningCourses',
-      '-notifications',
-    ])
+    const user = await User.findById(userId)
+      .select(['-password', '-notifications'])
+      .populate([
+        {
+          path: 'teachingCourses',
+          populate: [
+            {
+              path: 'topic',
+              select: ['title', 'courseCategoryId', 'discountPercent', 'slug'],
+              populate: {
+                path: 'courseCategoryId',
+                select: ['title', 'discountPercent', 'slug'],
+              },
+            },
+            {
+              path: 'streams',
+            },
+            {
+              path: 'chapters',
+              select: ['-lessons'],
+            },
+          ],
+        },
+      ])
 
     if (!user) {
       const error = new Error(`Account with email "${email}" not found!`)
@@ -344,6 +362,7 @@ exports.updateUserProfile = async (req, res, next) => {
   //or user can pass in an image url
   //usage: if user not change avatar, pass this to body for doesn't save new image
   const imageUrl = req.body.imageUrl
+  const cvUrl = req.body.cvUrl
 
   const oldPassword = req.body.oldPassword
   const newPassword = req.body.newPassword
@@ -429,6 +448,7 @@ exports.updateUserProfile = async (req, res, next) => {
     if (phoneNumber !== undefined) user.phoneNumber = phoneNumber
 
     if (imageUrl !== undefined) user.imageUrl = imageUrl
+    if (cvUrl !== undefined) user.cvUrl = cvUrl
     if (uploadS3Result) user.imageUrl = `/files/${uploadS3Result.Key}`
 
     if (hashedNewPassword) user.password = hashedNewPassword
@@ -550,6 +570,7 @@ exports.adminUpdateUserProfile = async (req, res, next) => {
   //address: {street: String, city: String, country: String}
 
   const imageUrl = req.body.imageUrl
+  const cvUrl = req.body.cvUrl
   const newPassword = req.body.newPassword
   const imageFile = req.file
 
@@ -614,6 +635,7 @@ exports.adminUpdateUserProfile = async (req, res, next) => {
       if (phoneNumber !== undefined) user.phoneNumber = phoneNumber
       if (role !== undefined) user.role = roleData
       if (imageUrl !== undefined) user.imageUrl = imageUrl
+      if (cvUrl !== undefined) user.cvUrl = cvUrl
       if (uploadS3Result) user.imageUrl = `/files/${uploadS3Result.Key}`
       if (hashedNewPassword !== undefined) user.password = hashedNewPassword
 
