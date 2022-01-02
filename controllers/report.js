@@ -154,7 +154,6 @@ exports.dashboard = async (req, res, next) => {
 
     //find top 10 courses
     //sort by number of learners
-
     const courses = await Course.find()
       .select('-__v -streams -chapters -tags -description')
       .populate([
@@ -184,6 +183,8 @@ exports.dashboard = async (req, res, next) => {
       .map(course => ({
         ...course._doc,
         learnersNumber: course.learnersDetail.length,
+        learnersDetail: undefined,
+        feedbacks: undefined,
       }))
       .sort((a, b) => b.learnersNumber - a.learnersNumber)
       .slice(0, 10)
