@@ -257,6 +257,15 @@ exports.dashboard = async (req, res, next) => {
       totalInactiveLearners +
       totalBannedLearners
 
+    //find new learners today
+    const newLearnersToday = await User.find({
+      'role.id': UserRole.LEARNER.id,
+      createdAt: {
+        $gte: new Date(new Date().setHours(0, 0, 0, 0)),
+        $lt: new Date(new Date().setHours(23, 59, 59, 999)),
+      },
+    }).countDocuments()
+
     //find new learners in last 7 days
     const newLearners7days = await User.find({
       'role.id': UserRole.LEARNER.id,
@@ -359,6 +368,15 @@ exports.dashboard = async (req, res, next) => {
       totalPendingTeachers +
       totalInactiveTeachers +
       totalBannedTeachers
+
+    //find new teachers today
+    const newTeachersToday = await User.find({
+      'role.id': UserRole.TEACHER.id,
+      createdAt: {
+        $gte: new Date(new Date().setHours(0, 0, 0, 0)),
+        $lt: new Date(new Date().setHours(23, 59, 59, 999)),
+      },
+    }).countDocuments()
 
     //find new Teachers in last 7 days
     const newTeachers7days = await User.find({
@@ -467,6 +485,14 @@ exports.dashboard = async (req, res, next) => {
       totalInactiveCourses +
       totalDraftCourses
 
+    //find new courses today
+    const newCoursesToday = await Course.find({
+      createdAt: {
+        $gte: new Date(new Date().setHours(0, 0, 0, 0)),
+        $lt: new Date(new Date().setHours(23, 59, 59, 999)),
+      },
+    }).countDocuments()
+
     //find new Courses in last 7 days
     const newCourses7days = await Course.find({
       createdAt: {
@@ -538,6 +564,7 @@ exports.dashboard = async (req, res, next) => {
       .sort('-createdAt')
 
     let totalRevenue = 0
+    let totalRevenueToday = 0
     let totalRevenueLast7days = 0
     let totalRevenueLast14days = 0
     let totalRevenueLast1month = 0
@@ -553,6 +580,12 @@ exports.dashboard = async (req, res, next) => {
 
       totalRevenue += paymentPrice
 
+      if (
+        createdDate >= new Date(new Date().setHours(0, 0, 0, 0)).getTime() &&
+        createdDate <= new Date(new Date().setHours(23, 59, 59, 999)).getTime()
+      ) {
+        totalRevenueToday += paymentPrice
+      }
       if (createdDate >= getLastXDays(7)) {
         totalRevenueLast7days += paymentPrice
         totalRevenueLast14days += paymentPrice
@@ -631,6 +664,7 @@ exports.dashboard = async (req, res, next) => {
           byRating: top10TeachersByRating || [],
         },
         newLearners: {
+          today: newLearnersToday || 0,
           last7days: newLearners7days,
           last14days: newLearners14days,
           last1month: newLearners1month,
@@ -641,6 +675,7 @@ exports.dashboard = async (req, res, next) => {
           last2years: newLearners2years,
         },
         newTeachers: {
+          today: newTeachersToday || 0,
           last7days: newTeachers7days,
           last14days: newTeachers14days,
           last1month: newTeachers1month,
@@ -651,6 +686,7 @@ exports.dashboard = async (req, res, next) => {
           last2years: newTeachers2years,
         },
         newCourses: {
+          today: newCoursesToday || 0,
           last7days: newCourses7days,
           last14days: newCourses14days,
           last1month: newCourses1month,
@@ -686,6 +722,7 @@ exports.dashboard = async (req, res, next) => {
         },
         revenue: {
           total: totalRevenue,
+          today: totalRevenueToday,
           last7days: totalRevenueLast7days,
           last14days: totalRevenueLast14days,
           last1month: totalRevenueLast1month,
