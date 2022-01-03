@@ -171,10 +171,10 @@ exports.dashboard = async (req, res, next) => {
         },
         {
           path: 'topic',
-          select: '_id title status',
+          select: '_id title status discountPercent',
           populate: {
             path: 'courseCategoryId',
-            select: '_id title status',
+            select: '_id title status discountPercent',
           },
         },
       ])
@@ -449,10 +449,10 @@ exports.dashboard = async (req, res, next) => {
       .select('-__v -learnersDetail')
       .populate({
         path: 'topic',
-        select: '_id title status',
+        select: '_id title status discountPercent',
         populate: {
           path: 'courseCategoryId',
-          select: '_id title status',
+          select: '_id title status discountPercent',
         },
       })
       .sort('-createdAt')
@@ -462,6 +462,20 @@ exports.dashboard = async (req, res, next) => {
       status: CourseStatus.PENDING,
     })
       .select('-__v -learnersDetail')
+      .populate([
+        {
+          path: 'topic',
+          select: '_id title status discountPercent',
+          populate: {
+            path: 'courseCategoryId',
+            select: '_id title status discountPercent',
+          },
+        },
+        {
+          path: 'author',
+          select: '_id firstName lastName email status',
+        },
+      ])
       .sort('-createdAt')
     const totalPendingCourses = pendingCourses.length
 
