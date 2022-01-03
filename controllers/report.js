@@ -673,6 +673,7 @@ exports.dashboard = async (req, res, next) => {
           last6months: newLearners6months,
           last1year: newLearners1year,
           last2years: newLearners2years,
+          total: totalLearners || 0,
         },
         newTeachers: {
           today: newTeachersToday || 0,
@@ -684,6 +685,7 @@ exports.dashboard = async (req, res, next) => {
           last6months: newTeachers6months,
           last1year: newTeachers1year,
           last2years: newTeachers2years,
+          total: totalTeachers || 0,
         },
         newCourses: {
           today: newCoursesToday || 0,
@@ -695,6 +697,7 @@ exports.dashboard = async (req, res, next) => {
           last6months: newCourses6months,
           last1year: newCourses1year,
           last2years: newCourses2years,
+          total: totalCourses || 0,
         },
         total: {
           learners: totalLearners,
@@ -721,7 +724,6 @@ exports.dashboard = async (req, res, next) => {
           last10LearnersRegistered: last10LearnersRegistered,
         },
         revenue: {
-          total: totalRevenue,
           today: totalRevenueToday,
           last7days: totalRevenueLast7days,
           last14days: totalRevenueLast14days,
@@ -731,6 +733,7 @@ exports.dashboard = async (req, res, next) => {
           last6months: totalRevenueLast6months,
           last1year: totalRevenueLast1year,
           last2years: totalRevenueLast2years,
+          total: totalRevenue,
         },
         data: {
           activeLearners: activeLearners,
