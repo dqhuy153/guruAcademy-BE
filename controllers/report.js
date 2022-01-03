@@ -9,6 +9,7 @@ const {
 } = require('../util/helper')
 const { UserStatus, CourseStatus } = require('../config/constant')
 const CourseDetail = require('../models/courseDetail')
+const CourseCategory = require('../models/courseCategory')
 
 exports.topTeacher = async (req, res, next) => {
   const count = +req.query.count || +req.params.count || 10
@@ -663,8 +664,26 @@ exports.dashboard = async (req, res, next) => {
       .select('-password -__v -notifications')
       .sort('-createdAt')
 
+    const categoriesData = await CourseCategory.find().populate({
+      path: 'topics',
+      populate: {
+        path: 'courses',
+
+        select: '-chapters -streams',
+        populate: [
+          {
+            path: 'learnersDetail',
+            select: 'payment status certificate',
+          },
+          {
+            path: 'feedbacks',
+          },
+        ],
+      },
+    })
+
     res.status(200).json({
-      message: 'Fetch top teachers successfully!',
+      message: 'Fetch dashboard data successfully!',
       data: {
         top10Courses: {
           byLearners: top10CoursesByLearners || [],
@@ -764,6 +783,7 @@ exports.dashboard = async (req, res, next) => {
           draftCourses: draftCourses,
           learnersData,
           teacherData,
+          categoriesData,
         },
       },
       success: true,
