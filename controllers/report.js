@@ -576,6 +576,7 @@ exports.dashboard = async (req, res, next) => {
     const courseDetails = await CourseDetail.find()
       .select('payment userId courseId status createdAt updatedAt')
       .populate('userId', 'firstName lastName email imageUrl phoneNumber')
+      .populate('courseId')
       .sort('-createdAt')
 
     let totalRevenue = 0
