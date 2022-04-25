@@ -72,6 +72,7 @@ app.use((error, req, res, next) => {
   })
 })
 
+app.set('port', process.env.PORT || 4001)
 const connections = {}
 io.on('connection', (socket) => {
   console.log(connections)
@@ -131,7 +132,10 @@ mongoose
   .connect(mongodbUri, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => {
     console.log('Connected mongoDB')
-    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+    server.listen(app.get('port'), () => {
+      console.log('listening on', app.get('port'))
+    })
+    // app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
   })
   .catch(err => {
     console.log(err)
